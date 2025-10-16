@@ -1,0 +1,33 @@
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .logo {
+    font-weight: bold;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    flex-grow: 1;
+    justify-content: center;
+
+    p {
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .user-menu {
+    display: flex;
+    align-items: center;
+
+    .greeting {
+      margin-right: 0.3rem;
+    }
+  }
+}

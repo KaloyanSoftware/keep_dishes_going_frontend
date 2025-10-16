@@ -2,9 +2,9 @@ import "./App.css";
 import {BrowserRouter, Navigate, Route, Routes} from "react-router";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {useContext} from "react";
-import {SecurityContext} from "./components/SecurityContext";
-import {SecurityContextProvider} from "./components/SecurityContextProvider";
-import {OwnerPage} from "./pages/OwnerPage.tsx";
+import {SecurityContext} from "./security/SecurityContext";
+import {SecurityContextProvider} from "./security/SecurityContextProvider";
+import {OwnerHomePage} from "./pages/OwnerHomePage.tsx";
 
 const queryClient = new QueryClient();
 
@@ -21,7 +21,7 @@ function AppContent() {
 
     return (
         <Routes>
-            <Route path="/owner" element={<OwnerPage/>}/>
+            <Route path="/owner" element={<OwnerHomePage/>}/>
             <Route path="/" element={<Navigate to="/owner"/>}/>
         </Routes>
     );
