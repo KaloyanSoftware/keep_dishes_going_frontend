@@ -1,23 +1,33 @@
 .app-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background-color: #1e1f24 !important; // Dark grey/navy for contrast
+  color: #fff;
+  width: 100%;
+
+  .app-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+  }
 
   .logo {
-    font-weight: bold;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #fff;
   }
 
   .nav-links {
     display: flex;
-    gap: 2rem;
-    flex-grow: 1;
-    justify-content: center;
+    gap: 1.5rem;
 
-    p {
-      cursor: pointer;
+    button {
+      font-size: 0.95rem;
+      text-transform: none;
+      color: #ddd;
+      transition: color 0.3s;
 
       &:hover {
-        text-decoration: underline;
+        color: #fff;
       }
     }
   }
@@ -25,9 +35,12 @@
   .user-menu {
     display: flex;
     align-items: center;
+    gap: 0.25rem;
 
     .greeting {
-      margin-right: 0.3rem;
+      color: #f0f0f0;
+      font-weight: 500;
+      margin-right: 0.5rem;
     }
   }
 }

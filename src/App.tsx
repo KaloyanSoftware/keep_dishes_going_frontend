@@ -4,7 +4,10 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {useContext} from "react";
 import {SecurityContext} from "./security/SecurityContext";
 import {SecurityContextProvider} from "./security/SecurityContextProvider";
-import {OwnerHomePage} from "./pages/OwnerHomePage.tsx";
+import {Restaurant} from "./pages/Restaurant.tsx";
+import {ThemeProvider} from "@emotion/react";
+import {theme} from "../theme.ts";
+import {CssBaseline} from "@mui/material";
 
 const queryClient = new QueryClient();
 
@@ -21,20 +24,23 @@ function AppContent() {
 
     return (
         <Routes>
-            <Route path="/owner" element={<OwnerHomePage/>}/>
-            <Route path="/" element={<Navigate to="/owner"/>}/>
+            <Route path="/owner/restaurant" element={<Restaurant/>}/>
+            <Route path="/" element={<Navigate to="/owner/restaurant"/>}/>
         </Routes>
     );
 }
 
 export default function App() {
     return (
-        <QueryClientProvider client={queryClient}>
-            <SecurityContextProvider>
-                <BrowserRouter>
-                    <AppContent/>
-                </BrowserRouter>
-            </SecurityContextProvider>
-        </QueryClientProvider>
+        <ThemeProvider theme={theme}>
+            <CssBaseline/>
+            <QueryClientProvider client={queryClient}>
+                <SecurityContextProvider>
+                    <BrowserRouter>
+                        <AppContent/>
+                    </BrowserRouter>
+                </SecurityContextProvider>
+            </QueryClientProvider>
+        </ThemeProvider>
     );
 }

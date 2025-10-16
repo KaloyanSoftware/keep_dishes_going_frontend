@@ -1,0 +1,88 @@
+.restaurant-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f6fa;
+}
+
+.restaurant-content {
+  flex: 1;
+  padding: 3rem 0;
+}
+
+.restaurant-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.restaurant-card {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  padding: 2rem;
+  border-radius: 16px;
+  background: #fff;
+  align-items: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+  }
+
+  .restaurant-info {
+    flex: 1;
+    color: #333;
+
+    .restaurant-title {
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 0.75rem;
+    }
+
+    .info-line {
+      margin: 0.3rem 0;
+      font-size: 1rem;
+
+      strong {
+        color: #000;
+      }
+    }
+  }
+
+  .restaurant-image-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .restaurant-image {
+      width: 100%;
+      max-width: 420px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+.dishes-section {
+  padding: 2rem;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 3px 16px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.create-message {
+  text-align: center;
+  color: #666;
+  margin-top: 8rem;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}

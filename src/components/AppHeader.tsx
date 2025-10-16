@@ -1,5 +1,5 @@
 import {useContext, useState} from "react";
-import {AppBar, Box, IconButton, Menu, MenuItem, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography} from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import {SecurityContext} from "../security/SecurityContext";
 import "./AppHeader.scss";
@@ -14,17 +14,24 @@ export function AppHeader() {
     const open = Boolean(anchorEl);
 
     return (
-        <AppBar position="static" color="primary">
-            <Toolbar className="app-header">
-                <Typography variant="h6" className="logo">KDG</Typography>
+        <AppBar position="static" className="app-header" elevation={2}>
+            <Toolbar className="app-toolbar">
+                {/* Logo */}
+                <Typography variant="h5" className="logo">
+                    🍽 KeepDishesGoing
+                </Typography>
 
+                {/* Navigation links */}
                 <Box className="nav-links">
-                    <Typography variant="body1">Restaurants</Typography>
-                    <Typography variant="body1">Profile</Typography>
+                    <Button color="inherit">Restaurant</Button>
+                    <Button color="inherit">Profile</Button>
                 </Box>
 
+                {/* User section */}
                 <Box className="user-menu">
-                    <Typography variant="body1" className="greeting">Hi, {email}</Typography>
+                    <Typography variant="body1" className="greeting">
+                        Hi, {email}
+                    </Typography>
                     <IconButton color="inherit" onClick={(e) => setAnchorEl(e.currentTarget)}>
                         <KeyboardArrowDownIcon/>
                     </IconButton>
