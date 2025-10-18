@@ -1,14 +1,14 @@
 import {useEffect, useState} from "react";
-import {Box, Button, CircularProgress, Container, Divider, Paper, Typography,} from "@mui/material";
+import {Box, CircularProgress, Container, Divider, Paper, Typography,} from "@mui/material";
 import "./Restaurant.scss";
 import {useRestaurant} from "../hooks/useRestaurant.ts";
-import {Footer} from "../components/Footer";
 import {AppHeader} from "../components/AppHeader";
 import {RestaurantDialog} from "../components/RestaurantDialog";
 
 export function Restaurant() {
     const {isLoading, isError, restaurant} = useRestaurant();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+
 
     useEffect(() => {
         if (!isLoading && !restaurant) setIsDialogOpen(true);
@@ -30,7 +30,7 @@ export function Restaurant() {
 
     return (
         <Box className="restaurant-root">
-            <AppHeader/>
+            <AppHeader restaurantId={restaurant?.id}/>
 
             <Box className="restaurant-content">
                 {!restaurant ? (
@@ -77,30 +77,11 @@ export function Restaurant() {
                                 />
                             </Box>
                         </Paper>
-
-                        {/* Dishes section placeholder */}
-                        <Paper className="dishes-section" elevation={2}>
-                            <Typography variant="h5" fontWeight={600} mb={2}>
-                                🍝 Dishes
-                            </Typography>
-                            <Typography color="text.secondary">
-                                You haven’t added any dishes yet. Add some to start building your menu!
-                            </Typography>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                sx={{mt: 2}}
-                                onClick={() => alert("Coming soon")}
-                            >
-                                Add Dish
-                            </Button>
-                        </Paper>
                     </Container>
                 )}
             </Box>
 
             <RestaurantDialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)}/>
-            <Footer/>
         </Box>
     );
 }

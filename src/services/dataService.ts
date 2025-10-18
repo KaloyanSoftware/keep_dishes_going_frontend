@@ -2,6 +2,8 @@ import axios from "axios";
 import type {Restaurant} from "../model/Restaurant.ts";
 import type Keycloak from "keycloak-js";
 import type {RestaurantFormData} from "../model/RestaurantFormData.ts";
+import type {NewDishDraft} from "../model/NewDishDraft.ts";
+import type {DishDraft} from "../model/DishDraft.ts";
 
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 
@@ -48,5 +50,33 @@ export async function createRestaurant(newRestaurant: RestaurantFormData, keyclo
 
     const response = await axios.post(`/restaurants`, requestBody);
     return response.data;
+}
+
+export async function createDishDraft(dishDraft: NewDishDraft) {
+    const {data: newDishDraft} = await axios.post<DishDraft>(`/drafts`, dishDraft);
+
+    return newDishDraft
+
+}
+
+export async function getFoodTags(): Promise<string[]> {
+    const response = await axios.get("/enums/food-tags");
+    return response.data;
+}
+
+export async function getDishTypes(): Promise<string[]> {
+    const response = await axios.get("/enums/dish-types");
+    return response.data;
+}
+
+export async function getDrafts(restaurantId: string): Promise<DishDraft[]> {
+
+    try {
+        const response = await axios.get(`/owner/restaurant/${restaurantId}/drafts`);
+        return response.data;
+    } catch (err) {
+        console.error("Error fetching drafts:", err);
+        throw err;
+    }
 }
 

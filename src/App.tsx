@@ -8,6 +8,7 @@ import {Restaurant} from "./pages/Restaurant.tsx";
 import {ThemeProvider} from "@emotion/react";
 import {theme} from "../theme.ts";
 import {CssBaseline} from "@mui/material";
+import {Drafts} from "./pages/Drafts.tsx";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ function AppContent() {
         <Routes>
             <Route path="/owner/restaurant" element={<Restaurant/>}/>
             <Route path="/" element={<Navigate to="/owner/restaurant"/>}/>
+            <Route path="/owner/restaurant/:id/drafts" element={<Drafts/>}/>
         </Routes>
     );
 }

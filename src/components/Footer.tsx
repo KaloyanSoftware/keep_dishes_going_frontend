@@ -4,7 +4,7 @@ import "./Footer.scss";
 export function Footer() {
     return (
         <Box className="footer">
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2">
                 © {new Date().getFullYear()} KeepDishesGoing
             </Typography>
         </Box>
