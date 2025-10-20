@@ -2,7 +2,7 @@ import {useNavigate, useParams} from "react-router";
 import {Box, Button, CircularProgress, Container, Typography} from "@mui/material";
 import {AppHeader} from "../components/AppHeader.tsx";
 import {DishCard} from "../components/DishCard.tsx";
-import {useDish, useUnpublishDish} from "../hooks/useDish.ts"; // <-- import your hook
+import {useDish, useUnpublishDish} from "../hooks/useDish.ts"; // your hooks file
 import "./Dishes.scss";
 
 export function Dishes() {
@@ -10,13 +10,12 @@ export function Dishes() {
     const navigate = useNavigate();
 
     if (!restaurantId) {
-        throw new Error(
-            "Missing restaurant ID in URL. Expected /owner/restaurant/:id/menu/dishes"
-        );
+        throw new Error("Missing restaurant ID in URL. Expected /owner/restaurant/:id/menu/dishes");
     }
 
     const {dishes, isLoading, isError} = useDish(restaurantId);
-    const {unpublishDish, isPending, isError: isUnpublishError} = useUnpublishDish(restaurantId);
+    //const {publishDish, isPending: isPublishing} = usePublishDish(restaurantId);
+    const {unpublishDish, isPending: isUnpublishing} = useUnpublishDish(restaurantId);
 
     if (isLoading)
         return (
@@ -34,40 +33,41 @@ export function Dishes() {
 
     const hasDishes = dishes && dishes.length > 0;
 
+    /*const handlePublishDish = async (dishId: string) => {
+        try {
+            await publishDish(dishId);
+        } catch (error) {
+            console.error("Failed to publish dish:", error);
+        }
+    };*/
+
     const handleUnpublishDish = async (dishId: string) => {
         try {
             unpublishDish(dishId);
-            console.log("Dish unpublished successfully:", dishId);
         } catch (error) {
             console.error("Failed to unpublish dish:", error);
         }
     };
+
+    const isProcessing = isUnpublishing;
 
     return (
         <Box className="dishes-root">
             <AppHeader restaurantId={restaurantId}/>
 
             <Container maxWidth="lg" className="dishes-page">
-                {/* Header row */}
                 <Box className="dishes-header">
                     <Typography variant="h4" fontWeight={700}>
                         Dishes
                     </Typography>
                 </Box>
 
-                {/* Show global error or loading from mutation */}
-                {isPending && (
+                {/*{isProcessing && (
                     <Typography color="text.secondary" mb={2}>
-                        Processing unpublish request...
+                        Processing changes...
                     </Typography>
-                )}
-                {isUnpublishError && (
-                    <Typography color="error" mb={2}>
-                        Failed to unpublish dish.
-                    </Typography>
-                )}
+                )}*/}
 
-                {/* Dishes grid or empty message */}
                 {!hasDishes ? (
                     <Box className="no-dishes">
                         <Typography variant="h5" fontWeight="600" gutterBottom>
@@ -90,7 +90,9 @@ export function Dishes() {
                             <DishCard
                                 key={dish.id}
                                 dish={dish}
-                                onUnpublish={() => handleUnpublishDish(dish.id)}
+                                //onPublish={handlePublishDish}
+                                onUnpublish={handleUnpublishDish}
+                                isProcessing={isProcessing}
                             />
                         ))}
                     </Box>

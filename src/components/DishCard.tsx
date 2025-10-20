@@ -1,24 +1,32 @@
-import {Box, Button, Card, CardContent, CardMedia, Typography} from "@mui/material";
+import {Box, Button, Card, CardContent, CardMedia, CircularProgress, Typography} from "@mui/material";
 import type {Dish} from "../model/Dish";
 import "./DishCard.scss";
 
 interface DishCardProps {
     dish: Dish;
+    //onPublish?: (dishId: string) => void;
     onUnpublish?: (dishId: string) => void;
     onMarkOutOfStock?: (dishId: string) => void;
+    isProcessing?: boolean;
 }
 
-export function DishCard({dish, onUnpublish, onMarkOutOfStock}: DishCardProps) {
-    const handleUnpublish = () => {
-        if (onUnpublish) onUnpublish(dish.id);
-    };
-
-    const handleMarkOutOfStock = () => {
-        if (onMarkOutOfStock) onMarkOutOfStock(dish.id);
-    };
-
+export function DishCard({
+                             dish,
+                             //onPublish,
+                             onUnpublish,
+                             onMarkOutOfStock,
+                             isProcessing = false,
+                         }: DishCardProps) {
     const isPublished = dish.state === "PUBLISHED" || dish.state === "ACTIVE";
     const isInStock = dish.stockStatus === "IN_STOCK";
+
+    const handlePublishToggle = () => {
+        if (isPublished) onUnpublish?.(dish.id);
+    };
+
+    const handleStockToggle = () => {
+        onMarkOutOfStock?.(dish.id);
+    };
 
     return (
         <Card className="dish-card" elevation={3}>
@@ -35,6 +43,7 @@ export function DishCard({dish, onUnpublish, onMarkOutOfStock}: DishCardProps) {
                 <Typography variant="body2" color="text.secondary">
                     {dish.type.replace("_", " ")} · €{dish.price}
                 </Typography>
+
                 <Box mt={1}>
                     <Typography variant="caption" color="text.secondary">
                         {dish.tags?.join(", ") || "No tags"}
@@ -61,21 +70,36 @@ export function DishCard({dish, onUnpublish, onMarkOutOfStock}: DishCardProps) {
                 <Box mt={2} className="dish-actions">
                     <Button
                         variant="contained"
-                        color="warning"
+                        color={isPublished ? "warning" : "success"}
                         size="small"
-                        onClick={handleUnpublish}
-                        className="unpublish-btn"
+                        onClick={handlePublishToggle}
+                        className="publish-btn"
+                        disabled={isProcessing}
                     >
-                        Unpublish
+                        {isProcessing ? (
+                            <CircularProgress size={18} color="inherit"/>
+                        ) : isPublished ? (
+                            "Unpublish"
+                        ) : (
+                            "Publish"
+                        )}
                     </Button>
+
                     <Button
                         variant="contained"
-                        color="error"
+                        color={isInStock ? "error" : "success"}
                         size="small"
-                        onClick={handleMarkOutOfStock}
-                        className="outstock-btn"
+                        onClick={handleStockToggle}
+                        className="stock-btn"
+                        disabled={isProcessing}
                     >
-                        Mark Out Of Stock
+                        {isProcessing ? (
+                            <CircularProgress size={18} color="inherit"/>
+                        ) : isInStock ? (
+                            "Mark Out Of Stock"
+                        ) : (
+                            "Mark In Stock"
+                        )}
                     </Button>
                 </Box>
             </CardContent>

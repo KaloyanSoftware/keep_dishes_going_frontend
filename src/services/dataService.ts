@@ -101,8 +101,8 @@ export async function publishDishDraft(draftId: string, restaurantId: string) {
 }
 
 export async function unpublishADish(dishId: string, restaurantId: string) {
-    const response = await axios.post(`/restaurant/${restaurantId}/menu/dishes:unpublish`, {
-        dishId: dishId
+    const response = await axios.post(`/restaurant/${restaurantId}/menu/dishes/unpublish`, {
+        id: dishId
     });
     return response.data;
 }
