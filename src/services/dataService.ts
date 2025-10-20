@@ -4,6 +4,7 @@ import type Keycloak from "keycloak-js";
 import type {RestaurantFormData} from "../model/RestaurantFormData.ts";
 import type {NewDishDraft} from "../model/NewDishDraft.ts";
 import type {DishDraft} from "../model/DishDraft.ts";
+import type {Dish} from "../model/Dish.ts";
 
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 
@@ -69,6 +70,18 @@ export async function getDishTypes(): Promise<string[]> {
     return response.data;
 }
 
+export async function getDishes(restaurantId: string): Promise<Dish[]> {
+
+    try {
+        const response = await axios.get(`/restaurant/${restaurantId}/menu/dishes`);
+        return response.data;
+    } catch (err) {
+        console.error("Error fetching dishes:", err);
+        throw err;
+    }
+}
+
+
 export async function getDrafts(restaurantId: string): Promise<DishDraft[]> {
 
     try {
@@ -78,5 +91,19 @@ export async function getDrafts(restaurantId: string): Promise<DishDraft[]> {
         console.error("Error fetching drafts:", err);
         throw err;
     }
+}
+
+export async function publishDishDraft(draftId: string, restaurantId: string) {
+    const response = await axios.post(`/restaurant/${restaurantId}/menu/dishes`, {
+        draftId: draftId
+    });
+    return response.data;
+}
+
+export async function unpublishADish(dishId: string, restaurantId: string) {
+    const response = await axios.post(`/restaurant/${restaurantId}/menu/dishes:unpublish`, {
+        dishId: dishId
+    });
+    return response.data;
 }
 

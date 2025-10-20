@@ -5,17 +5,21 @@ import "./Drafts.scss";
 import {AppHeader} from "../components/AppHeader";
 import {DraftCard} from "../components/DishDraftCard";
 import {DishDraftDialog} from "../components/DishDraftDialog";
-import {useDishDrafts} from "../hooks/useDishDrafts";
+import {useDishDraft, usePublishDishDraft} from "../hooks/useDishDraft.ts";
 import {useParams} from "react-router";
 
 export function Drafts() {
     const {id: restaurantId} = useParams<{ id: string }>();
 
     if (!restaurantId) {
-        throw new Error("Missing restaurant ID in URL. Expected /owner/restaurant/:id/drafts");
+        throw new Error(
+            "Missing restaurant ID in URL. Expected /owner/restaurant/:id/drafts"
+        );
     }
 
-    const {drafts, isLoading, isError} = useDishDrafts(restaurantId);
+    const {drafts, isLoading, isError} = useDishDraft(restaurantId);
+    const {publishDraft} = usePublishDishDraft(restaurantId);
+
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     if (isLoading)
@@ -34,10 +38,13 @@ export function Drafts() {
 
     const hasDrafts = drafts && drafts.length > 0;
 
-    // Example placeholder handler — replace with your real publish function later
-    const handlePublishDraft = (draftId: string) => {
-        console.log("Publish draft:", draftId);
-        // e.g. await publishDraft(restaurantId, draftId);
+    const handlePublishDraft = async (draftId: string) => {
+        try {
+            publishDraft(draftId);
+            console.log("Draft published successfully:", draftId);
+        } catch (error) {
+            console.error("Failed to publish draft:", error);
+        }
     };
 
     return (
@@ -75,7 +82,7 @@ export function Drafts() {
                             <DraftCard
                                 key={draft.id}
                                 draft={draft}
-                                onPublish={handlePublishDraft}
+                                onPublish={() => handlePublishDraft(draft.id)}
                             />
                         ))}
                     </Box>

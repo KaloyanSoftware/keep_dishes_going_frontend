@@ -1,4 +1,4 @@
-import {useAddDishDraft} from "../hooks/useDishDrafts.ts";
+import {useAddDishDraft} from "../hooks/useDishDraft.ts";
 import type {DishDraftFormData} from "../model/DishDraftFormData.ts";
 import {Dialog} from "@mui/material";
 import {DishDraftForm} from "./DishDraftForm.tsx";
@@ -12,9 +12,9 @@ interface DishDraftDialogProps {
 export function DishDraftDialog({restaurantId, isOpen, onClose}: DishDraftDialogProps) {
     const {isPending, isError, addNewDishDraft} = useAddDishDraft(restaurantId)
 
-    function handleSumbit(donation: DishDraftFormData) {
+    function handleSumbit(draft: DishDraftFormData) {
         addNewDishDraft({
-            ...donation,
+            ...draft,
             restaurantId: restaurantId
         })
         onClose()

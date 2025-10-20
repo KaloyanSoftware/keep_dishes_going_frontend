@@ -17,6 +17,4 @@ export type CuisineType =
     | "JAPANESE"
     | "MEXICAN"
     | "INDIAN"
-    | "AMERICAN"
-    | "CHINESE"
-    | "OTHER";
+    | "GREEK"

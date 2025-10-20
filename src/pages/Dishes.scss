@@ -1,0 +1,60 @@
+.dishes-root {
+  background: #f8f9fb;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.dishes-page {
+  flex: 1;
+  padding-top: 100px;
+  padding-bottom: 60px;
+}
+
+.dishes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  h4 {
+    color: #222;
+    font-weight: 700;
+  }
+}
+
+.no-dishes {
+  text-align: center;
+  margin-top: 100px;
+
+  h5 {
+    font-size: 1.4rem;
+    color: #333;
+  }
+
+  p {
+    color: #666;
+  }
+
+  button {
+    margin-top: 1rem;
+    padding: 0.75rem 1.6rem;
+    font-weight: 600;
+  }
+}
+
+.dishes-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.dishes-loading {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

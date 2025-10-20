@@ -52,7 +52,7 @@ export function RestaurantForm({onSubmit, disabled}: RestaurantFormProps) {
                 <TextField label="Picture URL" {...register("pictureURL")} />
 
                 <TextField select label="Cuisine Type" {...register("cuisineType")}>
-                    {["ITALIAN", "CHINESE", "JAPANESE", "MEXICAN", "INDIAN", "OTHER"].map(
+                    {["ITALIAN", "CHINESE", "JAPANESE", "MEXICAN", "INDIAN", "GREEK"].map(
                         (cuisine) => (
                             <MenuItem key={cuisine} value={cuisine}>
                                 {cuisine}

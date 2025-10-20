@@ -1,5 +1,5 @@
 import type {NewDishDraft} from "../model/NewDishDraft.ts";
-import {createDishDraft, getDrafts} from "../services/dataService.ts";
+import {createDishDraft, getDrafts, publishDishDraft} from "../services/dataService.ts";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 
 export function useAddDishDraft(restaurantId: string) {
@@ -23,7 +23,7 @@ export function useAddDishDraft(restaurantId: string) {
     }
 }
 
-export function useDishDrafts(restaurantId: string) {
+export function useDishDraft(restaurantId: string) {
     const {
         isLoading,
         isError,
@@ -34,4 +34,18 @@ export function useDishDrafts(restaurantId: string) {
     });
 
     return {isLoading, isError, drafts};
+}
+
+export function usePublishDishDraft(restaurantId: string) {
+    const queryClient = useQueryClient();
+
+    const {mutate: publishDraft, isPending, isError} = useMutation({
+        mutationFn: (draftId: string) =>
+            publishDishDraft(draftId, restaurantId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ["draft", restaurantId]});
+        },
+    });
+
+    return {publishDraft, isPending, isError};
 }

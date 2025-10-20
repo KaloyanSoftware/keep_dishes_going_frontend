@@ -9,6 +9,8 @@ import {ThemeProvider} from "@emotion/react";
 import {theme} from "../theme.ts";
 import {CssBaseline} from "@mui/material";
 import {Drafts} from "./pages/Drafts.tsx";
+import {Dishes} from "./pages/Dishes.tsx";
+import {RouteGuard} from "./security/RouteGuard.tsx";
 
 const queryClient = new QueryClient();
 
@@ -25,9 +27,10 @@ function AppContent() {
 
     return (
         <Routes>
-            <Route path="/owner/restaurant" element={<Restaurant/>}/>
+            <Route path="/owner/restaurant" element={<RouteGuard><Restaurant/></RouteGuard>}/>
             <Route path="/" element={<Navigate to="/owner/restaurant"/>}/>
-            <Route path="/owner/restaurant/:id/drafts" element={<Drafts/>}/>
+            <Route path="/owner/restaurant/:id/drafts" element={<RouteGuard><Drafts/></RouteGuard>}/>
+            <Route path="/owner/restaurant/:id/menu/dishes" element={<RouteGuard><Dishes/></RouteGuard>}/>
         </Routes>
     );
 }

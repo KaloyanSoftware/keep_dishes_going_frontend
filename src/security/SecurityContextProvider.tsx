@@ -47,13 +47,18 @@ export function SecurityContextProvider({children}: PropsWithChildren) {
         initKeycloak();
     }, []);
 
+    const login = () => keycloak.login();
     const logout = () => {
         removeAccessTokenFromAuthHeader();
         keycloak.logout({redirectUri: window.location.origin});
     };
 
+    const isAuthenticated = () => keycloak.authenticated;
+
     return (
-        <SecurityContext.Provider value={{keycloak, isInitialised, logout}}>
+        <SecurityContext.Provider
+            value={{keycloak, isInitialised, isAuthenticated, login, logout}}
+        >
             {children}
         </SecurityContext.Provider>
     );

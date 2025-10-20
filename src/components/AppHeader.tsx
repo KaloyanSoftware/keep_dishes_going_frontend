@@ -27,6 +27,11 @@ export function AppHeader({restaurantId}: AppHeaderProps) {
         else navigate("/owner/restaurant");
     };
 
+    const gotoDishes = () => {
+        if (restaurantId) navigate(`/owner/restaurant/${restaurantId}/menu/dishes`);
+        else navigate("/owner/restaurant");
+    };
+
     return (
         <AppBar
             position="fixed"
@@ -53,6 +58,17 @@ export function AppHeader({restaurantId}: AppHeaderProps) {
                         className={location.pathname.includes("/drafts") ? "active-link" : ""}
                     >
                         Drafts
+                    </Button>
+                </Box>
+
+                <Box className="nav-links">
+
+                    <Button
+                        color="inherit"
+                        onClick={gotoDishes}
+                        className={location.pathname.includes("/dishes") ? "active-link" : ""}
+                    >
+                        Dishes
                     </Button>
                 </Box>
 
