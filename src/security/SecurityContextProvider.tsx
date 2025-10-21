@@ -20,7 +20,7 @@ export function SecurityContextProvider({children}: PropsWithChildren) {
         const initKeycloak = async () => {
             try {
                 const authenticated = await keycloak.init({
-                    onLoad: "login-required",
+                    onLoad: "check-sso",
                     checkLoginIframe: false,
                 });
 

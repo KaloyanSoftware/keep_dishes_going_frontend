@@ -30,8 +30,13 @@ export function usePostRestaurant() {
     } = useMutation({
         mutationFn: (newRestaurant: RestaurantFormData) =>
             createRestaurant(newRestaurant, keycloak),
-        onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ["restaurants"]});
+
+        onSuccess: (createdRestaurant) => {
+            queryClient.setQueryData(["restaurant"], createdRestaurant);
+        },
+
+        onSettled: () => {
+            queryClient.invalidateQueries({queryKey: ["restaurant"]});
         },
     });
 
