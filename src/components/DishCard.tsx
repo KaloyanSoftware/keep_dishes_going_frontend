@@ -1,10 +1,10 @@
-import {Box, Button, Card, CardContent, CardMedia, CircularProgress, Typography} from "@mui/material";
+import {Box, Button, Card, CardContent, CardMedia, CircularProgress, Typography,} from "@mui/material";
 import type {Dish} from "../model/Dish";
 import "./DishCard.scss";
 
 interface DishCardProps {
     dish: Dish;
-    //onPublish?: (dishId: string) => void;
+    onPublish?: (dishId: string) => void;
     onUnpublish?: (dishId: string) => void;
     onMarkOutOfStock?: (dishId: string) => void;
     isProcessing?: boolean;
@@ -12,7 +12,7 @@ interface DishCardProps {
 
 export function DishCard({
                              dish,
-                             //onPublish,
+                             onPublish,
                              onUnpublish,
                              onMarkOutOfStock,
                              isProcessing = false,
@@ -22,6 +22,7 @@ export function DishCard({
 
     const handlePublishToggle = () => {
         if (isPublished) onUnpublish?.(dish.id);
+        else onPublish?.(dish.id);
     };
 
     const handleStockToggle = () => {
@@ -50,7 +51,6 @@ export function DishCard({
                     </Typography>
                 </Box>
 
-                {/* Status section */}
                 <Box mt={2} className="dish-status">
                     <Typography
                         variant="caption"
@@ -66,14 +66,12 @@ export function DishCard({
                     </Typography>
                 </Box>
 
-                {/* Action buttons */}
                 <Box mt={2} className="dish-actions">
                     <Button
                         variant="contained"
                         color={isPublished ? "warning" : "success"}
                         size="small"
                         onClick={handlePublishToggle}
-                        className="publish-btn"
                         disabled={isProcessing}
                     >
                         {isProcessing ? (
@@ -90,7 +88,6 @@ export function DishCard({
                         color={isInStock ? "error" : "success"}
                         size="small"
                         onClick={handleStockToggle}
-                        className="stock-btn"
                         disabled={isProcessing}
                     >
                         {isProcessing ? (

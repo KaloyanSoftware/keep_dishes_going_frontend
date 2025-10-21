@@ -1,4 +1,4 @@
-import {useAddDishDraft} from "../hooks/useDishDraft.ts";
+import {useAddDishDraft} from "../hooks/useDishDrafts.ts";
 import type {DishDraftFormData} from "../model/DishDraftFormData.ts";
 import {Dialog} from "@mui/material";
 import {DishDraftForm} from "./DishDraftForm.tsx";

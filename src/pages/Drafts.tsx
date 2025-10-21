@@ -5,7 +5,7 @@ import "./Drafts.scss";
 import {AppHeader} from "../components/AppHeader";
 import {DraftCard} from "../components/DishDraftCard";
 import {DishDraftDialog} from "../components/DishDraftDialog";
-import {useDishDraft, usePublishDishDraft} from "../hooks/useDishDraft.ts";
+import {useDishDrafts, usePublishDishDraft} from "../hooks/useDishDrafts.ts";
 import {useParams} from "react-router";
 
 export function Drafts() {
@@ -17,7 +17,7 @@ export function Drafts() {
         );
     }
 
-    const {drafts, isLoading, isError} = useDishDraft(restaurantId);
+    const {drafts, isLoading, isError} = useDishDrafts(restaurantId);
     const {publishDraft} = usePublishDishDraft(restaurantId);
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
