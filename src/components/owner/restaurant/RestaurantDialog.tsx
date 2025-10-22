@@ -1,7 +1,7 @@
 import {Dialog} from "@mui/material";
 import {RestaurantForm} from "./RestaurantForm.tsx";
-import {usePostRestaurant} from "../hooks/useRestaurant.ts";
-import type {RestaurantFormData} from "../model/RestaurantFormData.ts";
+import {usePostRestaurant} from "../../../hooks/useRestaurant.ts";
+import type {RestaurantFormData} from "../../../model/owner/RestaurantFormData.ts";
 
 interface RestaurantDialogProps {
     isOpen: boolean;

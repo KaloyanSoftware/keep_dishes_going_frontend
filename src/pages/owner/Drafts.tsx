@@ -2,10 +2,10 @@ import {useState} from "react";
 import {Box, Button, CircularProgress, Container, Fab, Typography,} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import "./Drafts.scss";
-import {AppHeader} from "../components/AppHeader";
-import {DraftCard} from "../components/DishDraftCard";
-import {DishDraftDialog} from "../components/DishDraftDialog";
-import {useDishDrafts, usePublishDishDraft} from "../hooks/useDishDrafts.ts";
+import {OwnerHeader} from "../../components/owner/header/OwnerHeader.tsx";
+import {DraftCard} from "../../components/owner/draft/DishDraftCard.tsx";
+import {DishDraftDialog} from "../../components/owner/draft/DishDraftDialog.tsx";
+import {useDishDrafts, usePublishDishDraft} from "../../hooks/useDishDrafts.ts";
 import {useParams} from "react-router";
 
 export function Drafts() {
@@ -49,17 +49,15 @@ export function Drafts() {
 
     return (
         <Box className="drafts-root">
-            <AppHeader restaurantId={restaurantId}/>
+            <OwnerHeader restaurantId={restaurantId}/>
 
             <Container maxWidth="lg" className="drafts-page">
-                {/* Header row */}
                 <Box className="drafts-header">
                     <Typography variant="h4" fontWeight={700}>
                         Dish Drafts
                     </Typography>
                 </Box>
 
-                {/* Drafts grid or empty message */}
                 {!hasDrafts ? (
                     <Box className="no-drafts">
                         <Typography variant="h5" fontWeight="600" gutterBottom>
@@ -89,7 +87,6 @@ export function Drafts() {
                 )}
             </Container>
 
-            {/* Floating Create Draft button (always visible) */}
             <Fab
                 color="primary"
                 aria-label="add"
@@ -99,7 +96,6 @@ export function Drafts() {
                 <AddIcon/>
             </Fab>
 
-            {/* Draft creation dialog */}
             <DishDraftDialog
                 isOpen={isDialogOpen}
                 onClose={() => setIsDialogOpen(false)}

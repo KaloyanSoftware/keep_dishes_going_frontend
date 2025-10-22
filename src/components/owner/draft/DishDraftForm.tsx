@@ -1,4 +1,4 @@
-import type {DishDraftFormData} from "../model/DishDraftFormData.ts";
+import type {DishDraftFormData} from "../../../model/owner/DishDraftFormData.ts";
 import {useForm} from "react-hook-form";
 import {
     Button,
@@ -13,8 +13,8 @@ import {
     Typography,
 } from "@mui/material";
 import {useState} from "react";
-import {useDishTypes} from "../hooks/useDishType.ts";
-import {useFoodTags} from "../hooks/useFoodTag.ts";
+import {useDishTypes} from "../../../hooks/useDishType.ts";
+import {useFoodTags} from "../../../hooks/useFoodTag.ts";
 
 interface DishDraftFormProps {
     onSubmit: (data: DishDraftFormData) => void;

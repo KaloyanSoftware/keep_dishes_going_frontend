@@ -1,10 +1,12 @@
 import axios from "axios";
-import type {Restaurant} from "../model/Restaurant.ts";
+import type {Restaurant} from "../model/owner/Restaurant.ts";
 import type Keycloak from "keycloak-js";
-import type {RestaurantFormData} from "../model/RestaurantFormData.ts";
-import type {NewDishDraft} from "../model/NewDishDraft.ts";
-import type {DishDraft} from "../model/DishDraft.ts";
-import type {Dish} from "../model/Dish.ts";
+import type {RestaurantFormData} from "../model/owner/RestaurantFormData.ts";
+import type {NewDishDraft} from "../model/owner/NewDishDraft.ts";
+import type {DishDraft} from "../model/owner/DishDraft.ts";
+import type {Dish} from "../model/owner/Dish.ts";
+import type {RestaurantProjection} from "../model/customer/RestaurantProjection.ts";
+import type {DishProjection} from "../model/customer/DishProjection.ts";
 
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 
@@ -112,5 +114,27 @@ export async function publishADish(dishId: string, restaurantId: string) {
         id: dishId
     });
     return response.data;
+}
+
+export async function getRestaurantProjections(): Promise<RestaurantProjection[]> {
+
+    try {
+        const response = await axios.get(`/customer/restaurants`);
+        return response.data;
+    } catch (err) {
+        console.error("Error fetching restaurant projections:", err);
+        throw err;
+    }
+}
+
+export async function getDishProjections(restaurantId: string): Promise<DishProjection[]> {
+
+    try {
+        const response = await axios.get(`/customer/restaurants/${restaurantId}/menu/dishes`);
+        return response.data;
+    } catch (err) {
+        console.error("Error fetching dish projections:", err);
+        throw err;
+    }
 }
 

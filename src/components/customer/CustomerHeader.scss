@@ -1,0 +1,39 @@
+.app-header {
+  background-color: #15161a !important;
+  color: #ffffff;
+  width: 100%;
+}
+
+.app-toolbar {
+  width: 100%;
+  min-height: 72px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 clamp(1rem, 4vw, 3rem);
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 1.8rem;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #ffb74d;
+  }
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .greeting {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f5f5f5;
+  }
+}

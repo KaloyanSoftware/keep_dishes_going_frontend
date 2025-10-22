@@ -1,5 +1,5 @@
 import {Box, Button, Card, CardContent, CardMedia, CircularProgress, Typography,} from "@mui/material";
-import type {Dish} from "../model/Dish";
+import type {Dish} from "../../../model/owner/Dish.ts";
 import "./DishCard.scss";
 
 interface DishCardProps {

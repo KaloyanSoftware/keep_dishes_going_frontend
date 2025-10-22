@@ -1,5 +1,5 @@
 import {Box, Button, Card, CardContent, CardMedia, Typography} from "@mui/material";
-import type {DishDraft} from "../model/DishDraft";
+import type {DishDraft} from "../../../model/owner/DishDraft.ts";
 import "./DishDraftCard.scss";
 
 interface DraftCardProps {

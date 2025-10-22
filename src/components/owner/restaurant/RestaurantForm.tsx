@@ -1,6 +1,6 @@
 import {useForm} from "react-hook-form";
 import {Box, Button, Divider, MenuItem, Stack, TextField, Typography} from "@mui/material";
-import type {RestaurantFormData} from "../model/RestaurantFormData.ts";
+import type {RestaurantFormData} from "../../../model/owner/RestaurantFormData.ts";
 
 const DAYS = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
 

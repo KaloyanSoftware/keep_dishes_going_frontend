@@ -1,7 +1,7 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {createRestaurant, getRestaurant} from "../services/dataService.ts";
+import {createRestaurant, getRestaurant, getRestaurantProjections} from "../services/dataService.ts";
 import {useSecurity} from "../security/useSecurity.ts";
-import type {RestaurantFormData} from "../model/RestaurantFormData.ts";
+import type {RestaurantFormData} from "../model/owner/RestaurantFormData.ts";
 
 export function useRestaurant() {
     const {keycloak, isInitialised} = useSecurity();
@@ -17,6 +17,19 @@ export function useRestaurant() {
     });
 
     return {isLoading, isError, restaurant};
+}
+
+export function useRestaurants() {
+    const {
+        isLoading,
+        isError,
+        data: restaurants,
+    } = useQuery({
+        queryKey: ["restaurants"],
+        queryFn: () => getRestaurantProjections()
+    });
+
+    return {isLoading, isError, restaurants};
 }
 
 export function usePostRestaurant() {

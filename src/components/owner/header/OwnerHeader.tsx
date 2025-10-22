@@ -1,15 +1,15 @@
 import {useContext, useState} from "react";
 import {AppBar, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography, useTheme} from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import {SecurityContext} from "../security/SecurityContext";
+import {SecurityContext} from "../../../security/SecurityContext.tsx";
 import {useLocation, useNavigate} from "react-router";
-import "./AppHeader.scss";
+import "./OwnerHeader.scss";
 
 interface AppHeaderProps {
     restaurantId: string | undefined
 }
 
-export function AppHeader({restaurantId}: AppHeaderProps) {
+export function OwnerHeader({restaurantId}: AppHeaderProps) {
     const security = useContext(SecurityContext);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const navigate = useNavigate();

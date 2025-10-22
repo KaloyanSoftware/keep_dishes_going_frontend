@@ -1,8 +1,8 @@
 import {useNavigate, useParams} from "react-router";
 import {Box, Button, CircularProgress, Container, Typography,} from "@mui/material";
-import {AppHeader} from "../components/AppHeader.tsx";
-import {DishCard} from "../components/DishCard.tsx";
-import {useDishes, usePublishDish, useUnpublishDish} from "../hooks/useDishes.ts";
+import {OwnerHeader} from "../../components/owner/header/OwnerHeader.tsx";
+import {DishCard} from "../../components/owner/dish/DishCard.tsx";
+import {useDishes, usePublishDish, useUnpublishDish} from "../../hooks/useDish.ts";
 import "./Dishes.scss";
 
 export function Dishes() {
@@ -42,7 +42,7 @@ export function Dishes() {
 
     return (
         <Box className="dishes-root">
-            <AppHeader restaurantId={restaurantId}/>
+            <OwnerHeader restaurantId={restaurantId}/>
             <Container maxWidth="lg" className="dishes-page">
                 <Box className="dishes-header">
                     <Typography variant="h4" fontWeight={700}>

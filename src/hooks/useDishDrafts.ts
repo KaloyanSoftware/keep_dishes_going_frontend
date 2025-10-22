@@ -1,4 +1,4 @@
-import type {NewDishDraft} from "../model/NewDishDraft.ts";
+import type {NewDishDraft} from "../model/owner/NewDishDraft.ts";
 import {createDishDraft, getDrafts, publishDishDraft} from "../services/dataService.ts";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 
