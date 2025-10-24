@@ -1,9 +1,12 @@
 import {Box, CircularProgress, Container, Typography} from "@mui/material";
 import "./Menu.scss";
-import {DishProjectionCard} from "../../components/customer/DishProjectionCard.tsx";
-import {useDishProjections} from "../../hooks/useDishProjection.ts";
+import {DishProjectionCard} from "../../components/customer/DishProjectionCard";
+import {useDishProjections} from "../../hooks/useDishProjection";
 import {useParams} from "react-router";
 import {CustomerHeader} from "../../components/customer/CustomerHeader";
+import {useAddItemToBasket} from "../../hooks/useBasket.ts";
+import {useQueryClient} from "@tanstack/react-query";
+import type {Basket} from "../../model/customer/Basket";
 
 export function Menu() {
     const {id: restaurantId} = useParams<{ id: string }>();
@@ -12,7 +15,19 @@ export function Menu() {
         throw new Error("Missing restaurant ID in URL. Expected /restaurants/:id/menu");
     }
 
+    const queryClient = useQueryClient();
+
     const {dishes, isLoading, isError} = useDishProjections(restaurantId);
+
+    const {addDishToBasket, isPending} = useAddItemToBasket(restaurantId);
+
+    const basket: Basket | undefined = queryClient.getQueryData(["basket"]);
+
+    const basketCount = basket?.basketLines?.length ?? 0;
+
+    if (!restaurantId) {
+        throw new Error("Missing restaurant ID in URL. Expected /restaurants/:id/menu");
+    }
 
     if (isLoading)
         return (
@@ -28,11 +43,13 @@ export function Menu() {
             </Typography>
         );
 
-    const hasDishes = (dishes && dishes.length > 0);
+    const hasDishes = dishes && dishes.length > 0;
+
+    const handleAddItem = (dishId: string) => addDishToBasket(dishId);
 
     return (
         <Box className="menu-root">
-            <CustomerHeader/>
+            <CustomerHeader basketCount={basketCount}/>
 
             <Container maxWidth="lg" className="menu-page">
                 <Box className="menu-header">
@@ -53,7 +70,12 @@ export function Menu() {
                 ) : (
                     <Box className="menu-grid">
                         {dishes.map((dish) => (
-                            <DishProjectionCard key={dish.dishId} dish={dish}/>
+                            <DishProjectionCard
+                                key={dish.dishId}
+                                dish={dish}
+                                onAddToBasket={handleAddItem}
+                                isAdding={isPending}
+                            />
                         ))}
                     </Box>
                 )}

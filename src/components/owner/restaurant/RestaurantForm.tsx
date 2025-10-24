@@ -53,9 +53,9 @@ export function RestaurantForm({onSubmit, disabled}: RestaurantFormProps) {
 
                 <TextField select label="Cuisine Type" {...register("cuisineType")}>
                     {["ITALIAN", "CHINESE", "JAPANESE", "MEXICAN", "INDIAN", "GREEK"].map(
-                        (cuisine) => (
-                            <MenuItem key={cuisine} value={cuisine}>
-                                {cuisine}
+                        (cuisineType) => (
+                            <MenuItem key={cuisineType} value={cuisineType}>
+                                {cuisineType}
                             </MenuItem>
                         )
                     )}

@@ -8,13 +8,6 @@ export type Restaurant = {
     email: string;
     pictureURL: string;
     defaultPrepTime: number;
-    cuisineType: CuisineType;
+    cuisineType: string;
     openingHours: OpeningHours;
 };
-
-export type CuisineType =
-    | "ITALIAN"
-    | "JAPANESE"
-    | "MEXICAN"
-    | "INDIAN"
-    | "GREEK"

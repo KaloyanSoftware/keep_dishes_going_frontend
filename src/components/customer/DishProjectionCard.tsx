@@ -1,79 +1,48 @@
-import {Box, Button, Card, CardContent, CardMedia, Typography} from "@mui/material";
+import {Button, Card, CardContent, CardMedia, CircularProgress, Typography,} from "@mui/material";
 import type {DishProjection} from "../../model/customer/DishProjection";
-import "./DishProjectionCard.scss";
-import {useEffect, useState} from "react";
 
 interface DishProjectionCardProps {
     dish: DishProjection;
-    onAddToBasket?: (dishId: string) => void;
+    onAddToBasket: (dishId: string) => void;
+    isAdding?: boolean;
 }
 
-export function DishProjectionCard({dish, onAddToBasket}: DishProjectionCardProps) {
-    const [isOutOfStock, setOutOfStock] = useState(dish.stockStatus === "OUT_OF_STOCK");
-
-    useEffect(() => {
-        setOutOfStock(dish.stockStatus === "OUT_OF_STOCK");
-    }, [dish.stockStatus]);
-
-    const handleAddToBasket = () => {
-        onAddToBasket?.(dish.dishId);
-    };
-
+export function DishProjectionCard({
+                                       dish,
+                                       onAddToBasket,
+                                       isAdding = false,
+                                   }: DishProjectionCardProps) {
     return (
-        <Card className="dish-projection-card" elevation={3}>
+        <Card className="dish-card">
             <CardMedia
                 component="img"
-                height="200"
-                image={dish.pictureURL || "/placeholder.jpg"}
+                height="160"
+                image={dish.pictureURL}
                 alt={dish.name}
             />
-
-            <CardContent className="dish-projection-content">
-                <Typography variant="h6" fontWeight="700" gutterBottom>
+            <CardContent>
+                <Typography variant="h6" fontWeight={600}>
                     {dish.name}
                 </Typography>
-
-                <Typography variant="body2" color="text.secondary" gutterBottom>
-                    {dish.type.replace("_", " ")}
+                <Typography color="text.secondary">{dish.type}</Typography>
+                <Typography variant="body1" fontWeight="bold" mt={1}>
+                    €{dish.price.toFixed(2)}
                 </Typography>
 
-                <Typography variant="body2" color="text.secondary" gutterBottom>
-                    {dish.description}
-                </Typography>
-
-                <Box mt={1}>
-                    <Typography variant="caption" color="text.secondary">
-                        Categories: {dish.tags?.join(", ") || "None"}
-                    </Typography>
-                </Box>
-
-                <Box mt={2}>
-                    <Typography variant="body1" fontWeight="bold">
-                        Price: €{dish.price.toFixed(2)}
-                    </Typography>
-                    <Typography
-                        variant="body1"
-                        fontWeight="bold"
-                        sx={{
-                            color: isOutOfStock ? "#d32f2f" : "#2e7d32",
-                        }}
-                    >
-                        {isOutOfStock ? "Out of Stock" : "In Stock"}
-                    </Typography>
-                </Box>
-
-                {!isOutOfStock && (
-                    <Box mt={2} textAlign="right">
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            size="small"
-                            onClick={handleAddToBasket}
-                        >
-                            Add to Basket
-                        </Button>
-                    </Box>
-                )}
+                <Button
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    disabled={isAdding}
+                    onClick={() => onAddToBasket(dish.dishId)}
+                    sx={{mt: 1}}
+                >
+                    {isAdding ? (
+                        <CircularProgress size={22} color="inherit"/>
+                    ) : (
+                        "Add to Basket"
+                    )}
+                </Button>
             </CardContent>
         </Card>
     );

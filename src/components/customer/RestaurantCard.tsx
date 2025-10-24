@@ -26,7 +26,7 @@ export function RestaurantCard({restaurant, onExplore}: RestaurantCardProps) {
                     {location}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    Cuisine: {restaurant.cuisine}
+                    Cuisine: {restaurant.cuisineType}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                     Prep Time: {restaurant.defaultPrepTime} min

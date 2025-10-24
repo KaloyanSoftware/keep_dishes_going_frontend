@@ -10,6 +10,9 @@ import type {DishProjection} from "../model/customer/DishProjection.ts";
 
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 
+//for sendign customer session cookie for basket consistency
+axios.defaults.withCredentials = true;
+
 export async function getRestaurant(keycloak: Keycloak): Promise<Restaurant> {
     const ownerId = keycloak.tokenParsed?.sub;
 
@@ -137,4 +140,14 @@ export async function getDishProjections(restaurantId: string): Promise<DishProj
         throw err;
     }
 }
+
+export async function addItemToBasket(dishId: string, restaurantId: string) {
+    const response = await axios.post(`/baskets/basketLines`, {
+        dishId: dishId,
+        restaurantId: restaurantId
+    });
+    return response.data;
+}
+
+
 

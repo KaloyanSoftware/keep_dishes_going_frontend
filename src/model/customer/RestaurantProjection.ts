@@ -6,5 +6,5 @@ export type RestaurantProjection = {
     email: string;
     pictureURL: string;
     defaultPrepTime: number;
-    cuisine: string;
+    cuisineType: string;
 }
