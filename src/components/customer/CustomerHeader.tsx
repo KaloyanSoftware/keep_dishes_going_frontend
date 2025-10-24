@@ -4,14 +4,10 @@ import {BasketIcon} from "./BasketIcon";
 import {useBasketDrawer} from "../context/BasketDrawerContext";
 import "./CustomerHeader.scss";
 
-interface CustomerHeaderProps {
-    basketCount: number;
-}
-
-export function CustomerHeader({basketCount}: CustomerHeaderProps) {
+export function CustomerHeader() {
     const navigate = useNavigate();
     const theme = useTheme();
-    const {openDrawer} = useBasketDrawer();
+    const {openDrawer, basketCount} = useBasketDrawer();
 
     return (
         <AppBar

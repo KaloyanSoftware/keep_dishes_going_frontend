@@ -5,8 +5,6 @@ import {useDishProjections} from "../../hooks/useDishProjection";
 import {useParams} from "react-router";
 import {CustomerHeader} from "../../components/customer/CustomerHeader";
 import {useAddItemToBasket} from "../../hooks/useBasket.ts";
-import {useQueryClient} from "@tanstack/react-query";
-import type {Basket} from "../../model/customer/Basket";
 
 export function Menu() {
     const {id: restaurantId} = useParams<{ id: string }>();
@@ -15,15 +13,9 @@ export function Menu() {
         throw new Error("Missing restaurant ID in URL. Expected /restaurants/:id/menu");
     }
 
-    const queryClient = useQueryClient();
-
     const {dishes, isLoading, isError} = useDishProjections(restaurantId);
 
     const {addDishToBasket, isPending} = useAddItemToBasket(restaurantId);
-
-    const basket: Basket | undefined = queryClient.getQueryData(["basket"]);
-
-    const basketCount = basket?.basketLines?.length ?? 0;
 
     if (!restaurantId) {
         throw new Error("Missing restaurant ID in URL. Expected /restaurants/:id/menu");
@@ -49,7 +41,7 @@ export function Menu() {
 
     return (
         <Box className="menu-root">
-            <CustomerHeader basketCount={basketCount}/>
+            <CustomerHeader/>
 
             <Container maxWidth="lg" className="menu-page">
                 <Box className="menu-header">

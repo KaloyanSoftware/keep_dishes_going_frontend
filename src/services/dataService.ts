@@ -142,10 +142,15 @@ export async function getDishProjections(restaurantId: string): Promise<DishProj
 }
 
 export async function addItemToBasket(dishId: string, restaurantId: string) {
-    const response = await axios.post(`/baskets/basketLines`, {
+    const response = await axios.post(`/customer/baskets/basketLines`, {
         dishId: dishId,
         restaurantId: restaurantId
     });
+    return response.data;
+}
+
+export async function deleteItemFromBasket(basketId: string, dishId: string) {
+    const response = await axios.patch(`/customer/baskets/${basketId}/basketLines/${dishId}`);
     return response.data;
 }
 
