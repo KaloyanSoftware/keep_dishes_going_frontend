@@ -16,13 +16,14 @@ import {Menu} from "./pages/owner/Menu.tsx";
 import {BasketDrawerContextProvider, useBasketDrawer} from "./components/context/BasketDrawerContext.tsx";
 import {BasketDrawer} from "./components/customer/BasketDrawer.tsx";
 import type {Basket} from "./model/customer/Basket.ts";
+import {Checkout} from "./pages/customer/Checkout.tsx";
 
 const queryClient = new QueryClient();
 
 function BasketDrawerWrapper() {
     const {isOpen, closeDrawer} = useBasketDrawer();
     const queryClient = useQueryClient();
-    const basket = queryClient.getQueryData<Basket>(["basket"]) || {basketId: "", basketLines: []};
+    const basket = queryClient.getQueryData<Basket>(["basket"]);
     return <BasketDrawer open={isOpen} onClose={closeDrawer} basket={basket}/>;
 }
 
@@ -62,22 +63,28 @@ export default function App() {
                             <Route
                                 path="/customer/*"
                                 element={
-                                    <BasketDrawerContextProvider>
-                                        <>
-                                            <Routes>
-                                                <Route path="explore" element={<CustomerExplore/>}/>
-                                                <Route
-                                                    path="explore/restaurants"
-                                                    element={<RestaurantsExplore/>}
-                                                />
-                                                <Route
-                                                    path="explore/restaurants/:id/menu/dishes"
-                                                    element={<Menu/>}
-                                                />
-                                            </Routes>
-                                            <BasketDrawerWrapper/>
-                                        </>
-                                    </BasketDrawerContextProvider>
+                                    <>
+                                        <BasketDrawerContextProvider>
+                                            <>
+                                                <Routes>
+                                                    <Route path="explore" element={<CustomerExplore/>}/>
+                                                    <Route
+                                                        path="explore/restaurants"
+                                                        element={<RestaurantsExplore/>}
+                                                    />
+                                                    <Route
+                                                        path="explore/restaurants/:id/menu/dishes"
+                                                        element={<Menu/>}
+                                                    />
+                                                </Routes>
+                                                <BasketDrawerWrapper/>
+                                            </>
+                                        </BasketDrawerContextProvider>
+                                        <Routes>
+
+                                            <Route path="explore/baskets/:id/checkout" element={<Checkout/>}/>
+                                        </Routes>
+                                    </>
                                 }
                             />
                             <Route path="/" element={<Navigate to="/landing"/>}/>

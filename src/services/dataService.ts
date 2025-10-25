@@ -7,6 +7,7 @@ import type {DishDraft} from "../model/owner/DishDraft.ts";
 import type {Dish} from "../model/owner/Dish.ts";
 import type {RestaurantProjection} from "../model/customer/RestaurantProjection.ts";
 import type {DishProjection} from "../model/customer/DishProjection.ts";
+import type {CustomerInfoFormData} from "../model/customer/CustomerInfoFormData.ts";
 
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 
@@ -153,6 +154,14 @@ export async function deleteItemFromBasket(basketId: string, dishId: string) {
     const response = await axios.patch(`/customer/baskets/${basketId}/basketLines/${dishId}`);
     return response.data;
 }
+
+export async function createOrderFromBasket(basketId: string, customerInfo: CustomerInfoFormData) {
+    const response = await axios.post(`/customer/baskets/${basketId}/orders`, {customerInfo: customerInfo}, {
+        withCredentials: true
+    });
+    return response.data;
+}
+
 
 
 
