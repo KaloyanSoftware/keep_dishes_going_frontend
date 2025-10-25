@@ -1,13 +1,11 @@
 import {AppBar, Box, Toolbar, Typography, useTheme} from "@mui/material";
 import {useNavigate} from "react-router";
 import {BasketIcon} from "./BasketIcon";
-import {useBasketDrawer} from "../context/BasketDrawerContext";
 import "./CustomerHeader.scss";
 
 export function CustomerHeader() {
     const navigate = useNavigate();
     const theme = useTheme();
-    const {openDrawer, basketCount} = useBasketDrawer();
 
     return (
         <AppBar
@@ -29,7 +27,7 @@ export function CustomerHeader() {
                     <Typography variant="body1" className="greeting">
                         Hi, Guest
                     </Typography>
-                    <BasketIcon count={basketCount} onClick={openDrawer}/>
+                    <BasketIcon/>
                 </Box>
             </Toolbar>
         </AppBar>

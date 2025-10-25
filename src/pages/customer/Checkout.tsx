@@ -1,12 +1,20 @@
-import {Box, Container, Paper, Typography} from "@mui/material";
+import {Container, Paper, Typography} from "@mui/material";
 import {CheckoutForm} from "../../components/customer/checkout/CheckoutForm";
 import {useCreateOrder} from "../../hooks/useOrder";
 import {useParams} from "react-router";
-import "./Checkout.scss"
+import "./Checkout.scss";
+import {OrderConfirmation} from "../../components/customer/checkout/OrderConfirmation.tsx";
+import {useBasketDrawer} from "../../components/context/BasketDrawerContext.tsx";
 
 export function Checkout() {
     const {id} = useParams();
     const {createOrder, isPending, isSuccess, isError, order} = useCreateOrder(id!);
+    const {resetBasket} = useBasketDrawer();
+
+    if (isSuccess && order) {
+        resetBasket();
+        return <OrderConfirmation order={order}/>;
+    }
 
     return (
         <Container
@@ -32,19 +40,11 @@ export function Checkout() {
                     Checkout
                 </Typography>
 
-                {isSuccess && order ? (
-                    <Box>
-                        <Typography variant="h6" color="success.main" gutterBottom>
-                            🎉 Order placed successfully!
-                        </Typography>
-                    </Box>
-                ) : (
-                    <CheckoutForm
-                        onSubmit={createOrder}
-                        disabled={isPending}
-                        isError={isError}
-                    />
-                )}
+                <CheckoutForm
+                    onSubmit={createOrder}
+                    disabled={isPending}
+                    isError={isError}
+                />
             </Paper>
         </Container>
     );

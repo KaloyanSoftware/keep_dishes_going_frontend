@@ -1,6 +1,6 @@
 import "./App.css";
 import {BrowserRouter, Navigate, Route, Routes} from "react-router";
-import {QueryClient, QueryClientProvider, useQueryClient} from "@tanstack/react-query";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {SecurityContextProvider} from "./security/SecurityContextProvider";
 import {Restaurant} from "./pages/owner/Restaurant.tsx";
 import {ThemeProvider} from "@emotion/react";
@@ -15,16 +15,13 @@ import {RestaurantsExplore} from "./pages/customer/RestaurantsExplore.tsx";
 import {Menu} from "./pages/owner/Menu.tsx";
 import {BasketDrawerContextProvider, useBasketDrawer} from "./components/context/BasketDrawerContext.tsx";
 import {BasketDrawer} from "./components/customer/BasketDrawer.tsx";
-import type {Basket} from "./model/customer/Basket.ts";
 import {Checkout} from "./pages/customer/Checkout.tsx";
 
 const queryClient = new QueryClient();
 
 function BasketDrawerWrapper() {
     const {isOpen, closeDrawer} = useBasketDrawer();
-    const queryClient = useQueryClient();
-    const basket = queryClient.getQueryData<Basket>(["basket"]);
-    return <BasketDrawer open={isOpen} onClose={closeDrawer} basket={basket}/>;
+    return <BasketDrawer open={isOpen} onClose={closeDrawer}/>;
 }
 
 export default function App() {
@@ -79,11 +76,11 @@ export default function App() {
                                                 </Routes>
                                                 <BasketDrawerWrapper/>
                                             </>
-                                        </BasketDrawerContextProvider>
-                                        <Routes>
 
-                                            <Route path="explore/baskets/:id/checkout" element={<Checkout/>}/>
-                                        </Routes>
+                                            <Routes>
+                                                <Route path="explore/baskets/:id/checkout" element={<Checkout/>}/>
+                                            </Routes>
+                                        </BasketDrawerContextProvider>
                                     </>
                                 }
                             />

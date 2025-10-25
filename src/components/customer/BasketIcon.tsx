@@ -1,18 +1,16 @@
 import {Badge, IconButton} from "@mui/material";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import "./BasketIcon.scss";
+import {useBasketDrawer} from "../context/BasketDrawerContext";
 
-interface BasketIconProps {
-    count: number;
-    onClick?: () => void;
-}
+export function BasketIcon() {
+    const {basketCount, openDrawer} = useBasketDrawer();
 
-export function BasketIcon({count, onClick}: BasketIconProps) {
     return (
         <div className="basket-icon-container">
-            <IconButton color="inherit" className="basket-button" onClick={onClick}>
+            <IconButton color="inherit" className="basket-button" onClick={openDrawer}>
                 <Badge
-                    badgeContent={count}
+                    badgeContent={basketCount}
                     color="primary"
                     anchorOrigin={{vertical: "top", horizontal: "right"}}
                 >

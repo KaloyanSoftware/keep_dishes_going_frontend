@@ -20,8 +20,8 @@ export function CheckoutForm({onSubmit, disabled, isError}: CheckoutFormProps) {
             email: "",
             deliveryAddress: {
                 street: "",
-                number: 0,
-                postalCode: 0,
+                number: 330,
+                postalCode: 1111,
                 city: "",
                 country: "",
             },

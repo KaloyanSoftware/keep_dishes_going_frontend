@@ -12,21 +12,26 @@ import {
     Typography,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import type {Basket} from "../../model/customer/Basket";
 import {useDeleteItemFromBasket} from "../../hooks/useBasket.ts";
 import "./BasketDrawer.scss";
 import {useNavigate} from "react-router";
+import type {Basket} from "../../model/customer/Basket.ts";
+import {useQueryClient} from "@tanstack/react-query";
 
 interface BasketDrawerProps {
     open: boolean;
     onClose: () => void;
-    basket: Basket | undefined
 }
 
-export function BasketDrawer({open, onClose, basket}: BasketDrawerProps) {
+export function BasketDrawer({open, onClose}: BasketDrawerProps) {
     const navigate = useNavigate();
 
+    const queryClient = useQueryClient();
+
+    const basket = queryClient.getQueryData<Basket>(["basket"]);
+
     const basketLines = basket?.basketLines ?? [];
+
 
     const subtotal =
         basketLines.reduce((sum, line) => sum + line.price * line.quantity, 0) || 0;
@@ -107,7 +112,10 @@ export function BasketDrawer({open, onClose, basket}: BasketDrawerProps) {
                                 fullWidth
                                 size="large"
                                 sx={{mt: 2}}
-                                onClick={() => navigate(`/customer/explore/baskets/${basket?.basketId}/checkout`)}
+                                onClick={() => {
+                                    onClose();
+                                    navigate(`/customer/explore/baskets/${basket?.basketId}/checkout`);
+                                }}
                             >
                                 Checkout
                             </Button>
