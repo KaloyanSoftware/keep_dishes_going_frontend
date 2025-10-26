@@ -120,6 +120,20 @@ export async function publishADish(dishId: string, restaurantId: string) {
     return response.data;
 }
 
+export async function markDishOutOfStock(dishId: string, restaurantId: string) {
+    const response = await axios.patch(`/restaurant/${restaurantId}/menu/dishes/outOfStock`, {
+        dishId: dishId
+    });
+    return response.data;
+}
+
+export async function markDishBackInStock(dishId: string, restaurantId: string) {
+    const response = await axios.patch(`/restaurant/${restaurantId}/menu/dishes/backInStock`, {
+        dishId: dishId
+    });
+    return response.data;
+}
+
 export async function getRestaurantProjections(): Promise<RestaurantProjection[]> {
 
     try {

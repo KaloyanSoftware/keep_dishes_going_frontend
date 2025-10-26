@@ -1,8 +1,14 @@
 import {useNavigate, useParams} from "react-router";
-import {Box, Button, CircularProgress, Container, Typography,} from "@mui/material";
+import {Box, Button, CircularProgress, Container, Typography} from "@mui/material";
 import {OwnerHeader} from "../../components/owner/header/OwnerHeader.tsx";
 import {DishCard} from "../../components/owner/dish/DishCard.tsx";
-import {useDishes, usePublishDish, useUnpublishDish} from "../../hooks/useDish.ts";
+import {
+    useDishes,
+    useMarkDishBackInStock,
+    useMarkDishOutOfStock,
+    usePublishDish,
+    useUnpublishDish
+} from "../../hooks/useDish.ts";
 import "./Dishes.scss";
 
 export function Dishes() {
@@ -16,8 +22,10 @@ export function Dishes() {
     const {dishes, isLoading, isError} = useDishes(restaurantId);
     const {publishDish, isPending: isPublishing} = usePublishDish(restaurantId);
     const {unpublishDish, isPending: isUnpublishing} = useUnpublishDish(restaurantId);
+    const {markOutOfStock, isPending: isMarkingOut} = useMarkDishOutOfStock(restaurantId);
+    const {markBackInStock, isPending: isMarkingIn} = useMarkDishBackInStock(restaurantId);
 
-    const isProcessing = isPublishing || isUnpublishing;
+    const isProcessing = isPublishing || isUnpublishing || isMarkingOut || isMarkingIn;
 
     if (isLoading) {
         return (
@@ -39,6 +47,8 @@ export function Dishes() {
 
     const handlePublishDish = (dishId: string) => publishDish(dishId);
     const handleUnpublishDish = (dishId: string) => unpublishDish(dishId);
+    const handleMarkOutOfStock = (dishId: string) => markOutOfStock(dishId);
+    const handleMarkBackInStock = (dishId: string) => markBackInStock(dishId);
 
     return (
         <Box className="dishes-root">
@@ -76,6 +86,8 @@ export function Dishes() {
                                 dish={dish}
                                 onPublish={handlePublishDish}
                                 onUnpublish={handleUnpublishDish}
+                                onMarkOutOfStock={handleMarkOutOfStock}
+                                onMarkBackInStock={handleMarkBackInStock}
                                 isProcessing={isProcessing}
                             />
                         ))}
