@@ -59,6 +59,16 @@ export async function createRestaurant(newRestaurant: RestaurantFormData, keyclo
     return response.data;
 }
 
+export async function closeRestaurant(restaurantId: string) {
+    const response = await axios.patch(`/owners/restaurants/${restaurantId}/closed`);
+    return response.data;
+}
+
+export async function openRestaurant(restaurantId: string) {
+    const response = await axios.patch(`/owners/restaurants/${restaurantId}/opened`);
+    return response.data;
+}
+
 export async function createDishDraft(dishDraft: NewDishDraft) {
     const {data: newDishDraft} = await axios.post<DishDraft>(`/drafts`, dishDraft);
 

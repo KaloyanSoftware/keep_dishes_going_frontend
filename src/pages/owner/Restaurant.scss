@@ -1,50 +1,29 @@
 .restaurant-root {
+  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding-top: 72px; // Account for fixed header
+  background: #f9fafb;
+  padding-top: 72px;
 }
 
-.restaurant-content {
-  flex: 1;
-  padding: 3rem 1rem;
+.restaurant-layout {
+  width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.restaurant-container {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.restaurant-card {
-  border-radius: 24px !important;
-  overflow: visible;
-  background: #ffffff !important;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35) !important;
-  }
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .restaurant-hero {
+  width: 100%;
+  height: 420px;
   position: relative;
-  height: 400px;
   overflow: hidden;
 
   .restaurant-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
-  }
-
-  &:hover .restaurant-image {
-    transform: scale(1.1);
   }
 
   .hero-overlay {
@@ -52,145 +31,91 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 2.5rem;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    padding: 1.5rem 2rem;
 
     .restaurant-title {
-      color: #ffffff;
-      font-weight: 800;
-      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-      animation: slideInLeft 0.8s ease-out;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
     }
 
-    .cuisine-chip {
-      align-self: flex-start;
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
-      color: #ffffff !important;
-      font-weight: 700;
-      font-size: 1rem;
-      padding: 0.5rem 1rem;
-      height: auto;
-      animation: slideInLeft 0.8s ease-out 0.2s backwards;
-
-      .MuiChip-icon {
-        color: #ffffff !important;
-      }
+    .cuisine-chip,
+    .status-chip {
+      font-weight: 600;
     }
   }
 }
 
+.restaurant-status-action {
+  width: 100%;
+  background: #fff;
+  padding: 1.5rem 0;
+  text-align: center;
+
+  button {
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    text-transform: none;
+  }
+}
+
 .restaurant-details {
-  padding: 3rem 2.5rem;
-  background: #ffffff;
-  overflow: visible;
+  width: 100%;
+  background: #fff;
+  padding: 2rem 3rem;
 }
 
 .info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
-  overflow: visible;
 }
 
 .info-item {
   display: flex;
   align-items: flex-start;
-  gap: 1.5rem;
-  padding: 1.5rem;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  transition: all 0.3s ease;
-  min-height: fit-content;
-  overflow: visible;
-
-  &:hover {
-    transform: translateX(8px);
-    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-
-    .info-icon-wrapper {
-      transform: rotate(360deg);
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    }
-  }
+  gap: 1rem;
+  background: #f1f5f9;
+  border-radius: 10px;
+  padding: 1rem;
 
   .info-icon-wrapper {
-    min-width: 56px;
-    height: 56px;
+    width: 40px;
+    height: 40px;
+    background: #6366f1;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-    transition: all 0.4s ease;
 
     .info-icon {
-      color: #ffffff;
-      font-size: 1.75rem;
+      color: #fff;
     }
   }
 
   .info-content {
-    flex: 1;
-    min-width: 0;
-    overflow: visible;
-
     .info-label {
+      font-weight: 600;
+      font-size: 0.8rem;
       color: #64748b;
-      font-weight: 700;
-      letter-spacing: 1px;
-      font-size: 0.75rem;
-      display: block;
-      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
     }
 
     .info-value {
-      color: #1e293b;
       font-weight: 700;
-      font-size: 1.1rem;
-      margin-bottom: 0.25rem;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
+      color: #1e293b;
     }
 
     .info-secondary {
-      color: #64748b;
-      font-size: 0.95rem;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
+      color: #475569;
+      font-size: 0.9rem;
     }
   }
-}
-
-.error-card {
-  padding: 3rem;
-  border-radius: 20px !important;
-  text-align: center;
-  background: #ffffff !important;
-  max-width: 500px;
-
-  .error-title {
-    color: #ef4444;
-    font-weight: 800;
-    margin-bottom: 1rem;
-  }
-
-  .error-message {
-    color: #64748b;
-    font-size: 1.1rem;
-  }
-}
-
-.create-message {
-  text-align: center;
-  color: #ffffff;
-  font-weight: 700;
-  margin-top: 1.5rem;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .center {
@@ -198,77 +123,34 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1.5rem;
-  min-height: 70vh;
+  gap: 1rem;
+  min-height: 80vh;
 
   .MuiCircularProgress-root {
-    color: #ffffff;
+    color: #6366f1;
   }
 }
 
-// Animations
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
+.error-card {
+  padding: 2rem;
+  border-radius: 12px;
+  background: #fff;
+  text-align: center;
+
+  .error-title {
+    color: #dc2626;
+    font-weight: 700;
+    margin-bottom: 1rem;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  .error-message {
+    color: #475569;
   }
 }
 
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-// Responsive Design
-@media (max-width: 960px) {
+@media (max-width: 768px) {
   .restaurant-hero {
-    height: 300px;
-
-    .hero-overlay {
-      padding: 1.5rem;
-
-      .restaurant-title {
-        font-size: 2rem;
-      }
-    }
-  }
-
-  .restaurant-details {
-    padding: 2rem 1.5rem;
-  }
-
-  .info-item {
-    padding: 1rem;
-    gap: 1rem;
-
-    .info-icon-wrapper {
-      min-width: 48px;
-      height: 48px;
-
-      .info-icon {
-        font-size: 1.5rem;
-      }
-    }
-  }
-}
-
-@media (max-width: 600px) {
-  .restaurant-content {
-    padding: 2rem 0.5rem;
-  }
-
-  .restaurant-hero {
-    height: 250px;
+    height: 260px;
 
     .hero-overlay {
       padding: 1rem;
@@ -276,14 +158,10 @@
       .restaurant-title {
         font-size: 1.5rem;
       }
-
-      .cuisine-chip {
-        font-size: 0.875rem;
-      }
     }
   }
 
   .restaurant-details {
-    padding: 1.5rem 1rem;
+    padding: 1.5rem;
   }
 }

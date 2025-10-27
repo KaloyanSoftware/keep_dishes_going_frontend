@@ -1,5 +1,11 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {createRestaurant, getRestaurant, getRestaurantProjections} from "../services/dataService.ts";
+import {
+    closeRestaurant,
+    createRestaurant,
+    getRestaurant,
+    getRestaurantProjections,
+    openRestaurant
+} from "../services/dataService.ts";
 import {useSecurity} from "../security/useSecurity.ts";
 import type {RestaurantFormData} from "../model/owner/RestaurantFormData.ts";
 
@@ -54,4 +60,50 @@ export function usePostRestaurant() {
     });
 
     return {addRestaurant, isPending, isError};
+}
+
+export function useCloseRestaurant(restaurantId: string) {
+    const queryClient = useQueryClient();
+
+    const {
+        mutate: doCloseRestaurant,
+        isPending,
+        isError,
+    } = useMutation({
+        mutationFn: () =>
+            closeRestaurant(restaurantId),
+
+        onSuccess: (closedRestaurant) => {
+            queryClient.setQueryData(["restaurant"], closedRestaurant);
+        },
+
+        onSettled: () => {
+            queryClient.invalidateQueries({queryKey: ["restaurant"]});
+        },
+    });
+
+    return {doCloseRestaurant, isPending, isError};
+}
+
+export function useOpenRestaurant(restaurantId: string) {
+    const queryClient = useQueryClient();
+
+    const {
+        mutate: doOpenRestaurant,
+        isPending,
+        isError,
+    } = useMutation({
+        mutationFn: () =>
+            openRestaurant(restaurantId),
+
+        onSuccess: (openRestaurant) => {
+            queryClient.setQueryData(["restaurant"], openRestaurant);
+        },
+
+        onSettled: () => {
+            queryClient.invalidateQueries({queryKey: ["restaurant"]});
+        },
+    });
+
+    return {doOpenRestaurant, isPending, isError};
 }

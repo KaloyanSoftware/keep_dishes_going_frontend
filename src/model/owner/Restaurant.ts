@@ -10,4 +10,5 @@ export type Restaurant = {
     defaultPrepTime: number;
     cuisineType: string;
     openingHours: OpeningHours;
+    isOpen: boolean
 };
