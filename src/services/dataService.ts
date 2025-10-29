@@ -8,6 +8,8 @@ import type {Dish} from "../model/owner/Dish.ts";
 import type {RestaurantProjection} from "../model/customer/RestaurantProjection.ts";
 import type {DishProjection} from "../model/customer/DishProjection.ts";
 import type {CustomerInfoFormData} from "../model/customer/CustomerInfoFormData.ts";
+import type {OrderProjection} from "../model/owner/OrderProjection.ts";
+import type {Order} from "../model/customer/Order.ts";
 
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 
@@ -183,6 +185,21 @@ export async function createOrderFromBasket(basketId: string, customerInfo: Cust
     const response = await axios.post(`/customer/baskets/${basketId}/orders`, {customerInfo: customerInfo}, {
         withCredentials: true
     });
+    return response.data;
+}
+
+export async function getAllActiveOrdersForRestaurant(restaurantId: string): Promise<OrderProjection[]> {
+    try {
+        const response = await axios.get(`/owner/restaurant/${restaurantId}/activeOrders`);
+        return response.data;
+    } catch (err) {
+        console.error("Error fetching active orders:", err);
+        throw err;
+    }
+}
+
+export async function getOrderById(orderId: string) {
+    const response = await axios.get<Order>(`/customer/orders/${orderId}`);
     return response.data;
 }
 

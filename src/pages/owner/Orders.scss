@@ -1,0 +1,82 @@
+.orders-root {
+  min-height: 100vh;
+  background: #f9fafb;
+  display: flex;
+  flex-direction: column;
+}
+
+.orders-content {
+  flex: 1;
+  width: 100%;
+  margin-top: 96px; /* ensures content starts below fixed header */
+  padding: 2rem 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.orders-title {
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #1e293b;
+}
+
+.no-orders {
+  margin-top: 3rem;
+  text-align: center;
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.orders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  align-items: start;
+}
+
+.center {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  .MuiCircularProgress-root {
+    color: #6366f1;
+  }
+
+  h6 {
+    color: #334155;
+  }
+}
+
+@media (max-width: 1024px) {
+  .orders-content {
+    margin-top: 88px;
+    padding: 1.5rem 2rem;
+  }
+
+  .orders-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .orders-content {
+    margin-top: 80px;
+    padding: 1rem 1rem 1.5rem;
+  }
+
+  .orders-title {
+    font-size: 1.5rem;
+  }
+
+  .no-orders {
+    font-size: 1rem;
+  }
+}

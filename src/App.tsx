@@ -12,10 +12,11 @@ import {RouteGuard} from "./security/RouteGuard.tsx";
 import {Landing} from "./pages/Landing.tsx";
 import {CustomerExplore} from "./pages/customer/CustomerExplore.tsx";
 import {RestaurantsExplore} from "./pages/customer/RestaurantsExplore.tsx";
-import {Menu} from "./pages/owner/Menu.tsx";
+import {Menu} from "./pages/customer/Menu.tsx";
 import {BasketDrawerContextProvider, useBasketDrawer} from "./components/context/BasketDrawerContext.tsx";
 import {BasketDrawer} from "./components/customer/BasketDrawer.tsx";
 import {Checkout} from "./pages/customer/Checkout.tsx";
+import {Orders} from "./pages/owner/Orders.tsx";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,14 @@ export default function App() {
                                 element={
                                     <RouteGuard>
                                         <Dishes/>
+                                    </RouteGuard>
+                                }
+                            />
+                            <Route
+                                path="/owner/restaurant/:id/orders"
+                                element={
+                                    <RouteGuard>
+                                        <Orders/>
                                     </RouteGuard>
                                 }
                             />

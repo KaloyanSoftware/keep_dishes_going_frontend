@@ -32,6 +32,11 @@ export function OwnerHeader({restaurantId}: AppHeaderProps) {
         else navigate("/owner/restaurant");
     };
 
+    const gotoOrders = () => {
+        if (restaurantId) navigate(`/owner/restaurant/${restaurantId}/orders`);
+        else navigate("/owner/restaurant");
+    };
+
     return (
         <AppBar
             position="fixed"
@@ -40,7 +45,6 @@ export function OwnerHeader({restaurantId}: AppHeaderProps) {
             sx={{zIndex: theme.zIndex.drawer + 1}}
         >
             <Toolbar className="app-toolbar">
-                {/* Logo */}
                 <Typography
                     variant="h4"
                     className="logo"
@@ -49,7 +53,6 @@ export function OwnerHeader({restaurantId}: AppHeaderProps) {
                     KeepDishesGoing
                 </Typography>
 
-                {/* Navigation */}
                 <Box className="nav-links">
 
                     <Button
@@ -72,7 +75,17 @@ export function OwnerHeader({restaurantId}: AppHeaderProps) {
                     </Button>
                 </Box>
 
-                {/* User */}
+                <Box className="nav-links">
+
+                    <Button
+                        color="inherit"
+                        onClick={gotoOrders}
+                        className={location.pathname.includes("/orders") ? "active-link" : ""}
+                    >
+                        Orders
+                    </Button>
+                </Box>
+
                 <Box className="user-menu">
                     <Typography variant="body1" className="greeting">
                         Hi, {email}

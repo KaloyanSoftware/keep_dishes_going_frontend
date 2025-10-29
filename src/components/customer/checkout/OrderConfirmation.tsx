@@ -1,16 +1,44 @@
-import {Box, Button, Container, Divider, List, ListItem, ListItemText, Paper, Typography,} from "@mui/material";
+import {
+    Box,
+    Button,
+    CircularProgress,
+    Container,
+    Divider,
+    List,
+    ListItem,
+    ListItemText,
+    Paper,
+    Step,
+    StepLabel,
+    Stepper,
+    Typography,
+} from "@mui/material";
+import {CheckCircle, Home, HourglassEmpty, LocalDining, RestaurantMenu, TwoWheeler,} from "@mui/icons-material";
 import {useNavigate} from "react-router";
 import type {Order} from "../../../model/customer/Order";
+import {useOrderStatus} from "../../../hooks/useOrder.ts";
 import "./OrderConfirmation.scss";
 
 interface OrderConfirmationProps {
     order: Order;
 }
 
+const STATUS_STEPS = [
+    {key: "PENDING", label: "Pending", icon: <HourglassEmpty/>},
+    {key: "ACCEPTED", label: "Accepted", icon: <RestaurantMenu/>},
+    {key: "READY", label: "Ready for Pickup", icon: <LocalDining/>},
+    {key: "PICKED_UP", label: "On the Way", icon: <TwoWheeler/>},
+    {key: "DELIVERED", label: "Delivered", icon: <Home/>},
+];
+
 export function OrderConfirmation({order}: OrderConfirmationProps) {
     const navigate = useNavigate();
+    const {isLoading, isError, order: liveOrder} = useOrderStatus(order.id);
+    const currentOrder = liveOrder || order;
 
-    const totalPrice = order.orderLines.reduce((sum, line) => sum + line.total, 0);
+    const totalPrice = currentOrder.total;
+    const currentStatus = currentOrder.status?.trim().toUpperCase() || "PENDING";
+    const activeStep = STATUS_STEPS.findIndex((s) => s.key === currentStatus);
 
     return (
         <Container className="order-confirmation" maxWidth="sm">
@@ -20,20 +48,63 @@ export function OrderConfirmation({order}: OrderConfirmationProps) {
                 </Typography>
 
                 <Typography variant="subtitle1" color="text.secondary" gutterBottom>
-                    Order #: <strong>{order.id}</strong>
+                    Order #: <strong>{currentOrder.id}</strong>
                 </Typography>
 
                 <Divider sx={{my: 2}}/>
 
+                {isLoading ? (
+                    <Box className="center">
+                        <CircularProgress/>
+                        <Typography>Checking your order status...</Typography>
+                    </Box>
+                ) : isError ? (
+                    <Typography color="error" sx={{mb: 2}}>
+                        ⚠️ Failed to load order status.
+                    </Typography>
+                ) : (
+                    <>
+                        <Typography variant="h6" mb={2}>
+                            Current Status:{" "}
+                            <strong className={`status-text ${currentStatus.toLowerCase()}`}>
+                                {STATUS_STEPS.find((s) => s.key === currentStatus)?.label ||
+                                    currentStatus}
+                            </strong>
+                        </Typography>
+
+                        <Stepper activeStep={activeStep} alternativeLabel>
+                            {STATUS_STEPS.map((step, index) => (
+                                <Step key={step.key} completed={index < activeStep}>
+                                    <StepLabel
+                                        StepIconComponent={() =>
+                                            index < activeStep ? (
+                                                <CheckCircle className="step-icon completed"/>
+                                            ) : (
+                                                <span
+                                                    className={`step-icon ${
+                                                        index === activeStep ? "active" : "inactive"
+                                                    }`}
+                                                >
+                                                    {step.icon}
+                                                </span>
+                                            )
+                                        }
+                                    >
+                                        {step.label}
+                                    </StepLabel>
+                                </Step>
+                            ))}
+                        </Stepper>
+                    </>
+                )}
+
+                <Divider sx={{my: 3}}/>
+
                 <List>
-                    {order.orderLines.map((line, index) => (
+                    {currentOrder.orderLines.map((line, index) => (
                         <ListItem key={index} className="order-line">
                             <ListItemText
-                                primary={
-                                    <Typography fontWeight={600}>
-                                        {line.name}
-                                    </Typography>
-                                }
+                                primary={<Typography fontWeight={600}>{line.name}</Typography>}
                                 secondary={`€${line.pricePerUnit.toFixed(2)} × ${line.quantity}`}
                             />
                             <Typography fontWeight={600}>
@@ -57,14 +128,14 @@ export function OrderConfirmation({order}: OrderConfirmationProps) {
                     <Typography variant="subtitle1" fontWeight={600}>
                         Delivery Details
                     </Typography>
-                    <Typography>{order.customerInfo.name}</Typography>
-                    <Typography>{order.customerInfo.email}</Typography>
+                    <Typography>{currentOrder.customerInfo.name}</Typography>
+                    <Typography>{currentOrder.customerInfo.email}</Typography>
                     <Typography>
-                        {order.customerInfo.deliveryAddress.street}{" "}
-                        {order.customerInfo.deliveryAddress.number},{" "}
-                        {order.customerInfo.deliveryAddress.postalCode}{" "}
-                        {order.customerInfo.deliveryAddress.city},{" "}
-                        {order.customerInfo.deliveryAddress.country}
+                        {currentOrder.customerInfo.deliveryAddress.street}{" "}
+                        {currentOrder.customerInfo.deliveryAddress.number},{" "}
+                        {currentOrder.customerInfo.deliveryAddress.postalCode}{" "}
+                        {currentOrder.customerInfo.deliveryAddress.city},{" "}
+                        {currentOrder.customerInfo.deliveryAddress.country}
                     </Typography>
                 </Box>
 
@@ -78,12 +149,7 @@ export function OrderConfirmation({order}: OrderConfirmationProps) {
                     Back to Home
                 </Button>
 
-                <Button
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    sx={{mt: 3}}
-                >
+                <Button variant="contained" color="secondary" fullWidth sx={{mt: 2}}>
                     Track Order
                 </Button>
             </Paper>

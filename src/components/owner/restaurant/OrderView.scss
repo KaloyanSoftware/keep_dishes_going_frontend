@@ -1,0 +1,131 @@
+.order-card {
+  flex: 1 1 320px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #e2e8f0;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  &.pending {
+    border-left: 4px solid #f59e0b;
+  }
+
+  &.accepted {
+    border-left: 4px solid #10b981;
+  }
+
+  &.rejected {
+    border-left: 4px solid #ef4444;
+    opacity: 0.8;
+  }
+
+  &.ready {
+    border-left: 4px solid #3b82f6;
+  }
+
+  .order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+
+    .order-id {
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .status {
+      font-weight: 600;
+      text-transform: uppercase;
+
+      &.pending {
+        color: #f59e0b;
+      }
+
+      &.accepted {
+        color: #10b981;
+      }
+
+      &.rejected {
+        color: #ef4444;
+      }
+
+      &.ready {
+        color: #3b82f6;
+      }
+    }
+  }
+
+  .order-details {
+    margin-top: 0.75rem;
+
+    .address {
+      color: #475569;
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+
+      &::before {
+        content: "📍";
+        font-size: 1rem;
+      }
+    }
+
+    .order-lines {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+
+      .order-line {
+        font-size: 0.95rem;
+        color: #1e293b;
+        display: flex;
+        justify-content: space-between;
+
+        &:before {
+          content: "🍽️ ";
+        }
+      }
+    }
+  }
+
+  .order-actions {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      text-transform: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      padding: 0.5rem 1.5rem;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .order-card {
+    flex: 1 1 100%;
+    padding: 0.75rem 1rem;
+
+    .order-lines {
+      padding: 0.5rem 0.75rem;
+    }
+
+    .order-actions {
+      justify-content: center;
+    }
+  }
+}

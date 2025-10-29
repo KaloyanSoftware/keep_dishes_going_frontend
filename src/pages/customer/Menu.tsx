@@ -1,9 +1,9 @@
 import {Box, CircularProgress, Container, Typography} from "@mui/material";
 import "./Menu.scss";
-import {DishProjectionCard} from "../../components/customer/DishProjectionCard";
-import {useDishProjections} from "../../hooks/useDishProjection";
+import {DishProjectionCard} from "../../components/customer/DishProjectionCard.tsx";
+import {useDishProjections} from "../../hooks/useDishProjection.ts";
 import {useParams} from "react-router";
-import {CustomerHeader} from "../../components/customer/CustomerHeader";
+import {CustomerHeader} from "../../components/customer/CustomerHeader.tsx";
 import {useAddItemToBasket} from "../../hooks/useBasket.ts";
 
 export function Menu() {

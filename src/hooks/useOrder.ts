@@ -1,5 +1,5 @@
-import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {createOrderFromBasket} from "../services/dataService";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {createOrderFromBasket, getOrderById} from "../services/dataService";
 import type {CustomerInfoFormData} from "../model/customer/CustomerInfoFormData";
 import type {Order} from "../model/customer/Order";
 
@@ -22,4 +22,20 @@ export function useCreateOrder(basketId: string) {
     });
 
     return {createOrder, isPending, isError, isSuccess, order};
+}
+
+export function useOrderStatus(orderId: string) {
+    const {
+        isLoading,
+        isError,
+        data: order,
+    } = useQuery({
+        queryKey: ["order", orderId],
+        queryFn: () => getOrderById(orderId),
+        staleTime: 0,
+        refetchInterval: 4000,
+        refetchOnWindowFocus: true,
+    });
+
+    return {isLoading, isError, order};
 }
