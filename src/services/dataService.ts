@@ -1,6 +1,6 @@
 import axios from "axios";
-import type {Restaurant} from "../model/owner/Restaurant.ts";
 import type Keycloak from "keycloak-js";
+import type {Restaurant} from "../model/owner/Restaurant.ts";
 import type {RestaurantFormData} from "../model/owner/RestaurantFormData.ts";
 import type {NewDishDraft} from "../model/owner/NewDishDraft.ts";
 import type {DishDraft} from "../model/owner/DishDraft.ts";
@@ -12,16 +12,15 @@ import type {OrderProjection} from "../model/owner/OrderProjection.ts";
 import type {Order} from "../model/customer/Order.ts";
 
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+axios.defaults.withCredentials = true; // Maintain session cookie for basket consistency
 
-//for sendign customer session cookie for basket consistency
-axios.defaults.withCredentials = true;
+// ============================================================================
+// RESTAURANT CALLS
+// ============================================================================
 
 export async function getRestaurant(keycloak: Keycloak): Promise<Restaurant> {
     const ownerId = keycloak.tokenParsed?.sub;
-
-    if (!ownerId) {
-        throw new Error("User is not authenticated or token is missing subject ID");
-    }
+    if (!ownerId) throw new Error("User is not authenticated or token is missing subject ID");
 
     try {
         const response = await axios.get(`/owners/${ownerId}/restaurant`);
@@ -43,7 +42,6 @@ export async function createRestaurant(newRestaurant: RestaurantFormData, keyclo
         city: newRestaurant.city,
         country: newRestaurant.country,
     };
-
 
     const openingHours = {weeklySchedule: newRestaurant.openingHours};
 
@@ -71,25 +69,11 @@ export async function openRestaurant(restaurantId: string) {
     return response.data;
 }
 
-export async function createDishDraft(dishDraft: NewDishDraft) {
-    const {data: newDishDraft} = await axios.post<DishDraft>(`/drafts`, dishDraft);
-
-    return newDishDraft
-
-}
-
-export async function getFoodTags(): Promise<string[]> {
-    const response = await axios.get("/enums/food-tags");
-    return response.data;
-}
-
-export async function getDishTypes(): Promise<string[]> {
-    const response = await axios.get("/enums/dish-types");
-    return response.data;
-}
+// ============================================================================
+// DISH CALLS
+// ============================================================================
 
 export async function getDishes(restaurantId: string): Promise<Dish[]> {
-
     try {
         const response = await axios.get(`/restaurant/${restaurantId}/menu/dishes`);
         return response.data;
@@ -99,9 +83,36 @@ export async function getDishes(restaurantId: string): Promise<Dish[]> {
     }
 }
 
+export async function publishADish(dishId: string, restaurantId: string) {
+    const response = await axios.patch(`/restaurant/${restaurantId}/menu/dishes/published`, {id: dishId});
+    return response.data;
+}
+
+export async function unpublishADish(dishId: string, restaurantId: string) {
+    const response = await axios.patch(`/restaurant/${restaurantId}/menu/dishes/unpublished`, {id: dishId});
+    return response.data;
+}
+
+export async function markDishOutOfStock(dishId: string, restaurantId: string) {
+    const response = await axios.patch(`/restaurant/${restaurantId}/menu/dishes/outOfStock`, {dishId});
+    return response.data;
+}
+
+export async function markDishBackInStock(dishId: string, restaurantId: string) {
+    const response = await axios.patch(`/restaurant/${restaurantId}/menu/dishes/backInStock`, {dishId});
+    return response.data;
+}
+
+// ============================================================================
+// DRAFT CALLS
+// ============================================================================
+
+export async function createDishDraft(dishDraft: NewDishDraft) {
+    const {data: newDishDraft} = await axios.post<DishDraft>(`/drafts`, dishDraft);
+    return newDishDraft;
+}
 
 export async function getDrafts(restaurantId: string): Promise<DishDraft[]> {
-
     try {
         const response = await axios.get(`/owner/restaurant/${restaurantId}/drafts`);
         return response.data;
@@ -112,81 +123,13 @@ export async function getDrafts(restaurantId: string): Promise<DishDraft[]> {
 }
 
 export async function publishDishDraft(draftId: string, restaurantId: string) {
-    const response = await axios.post(`/restaurant/${restaurantId}/menu/dishes`, {
-        draftId: draftId
-    });
+    const response = await axios.post(`/restaurant/${restaurantId}/menu/dishes`, {draftId});
     return response.data;
 }
 
-export async function unpublishADish(dishId: string, restaurantId: string) {
-    const response = await axios.patch(`/restaurant/${restaurantId}/menu/dishes/unpublished`, {
-        id: dishId
-    });
-    return response.data;
-}
-
-export async function publishADish(dishId: string, restaurantId: string) {
-    const response = await axios.patch(`/restaurant/${restaurantId}/menu/dishes/published`, {
-        id: dishId
-    });
-    return response.data;
-}
-
-export async function markDishOutOfStock(dishId: string, restaurantId: string) {
-    const response = await axios.patch(`/restaurant/${restaurantId}/menu/dishes/outOfStock`, {
-        dishId: dishId
-    });
-    return response.data;
-}
-
-export async function markDishBackInStock(dishId: string, restaurantId: string) {
-    const response = await axios.patch(`/restaurant/${restaurantId}/menu/dishes/backInStock`, {
-        dishId: dishId
-    });
-    return response.data;
-}
-
-export async function getRestaurantProjections(): Promise<RestaurantProjection[]> {
-
-    try {
-        const response = await axios.get(`/customer/restaurants`);
-        return response.data;
-    } catch (err) {
-        console.error("Error fetching restaurant projections:", err);
-        throw err;
-    }
-}
-
-export async function getDishProjections(restaurantId: string): Promise<DishProjection[]> {
-
-    try {
-        const response = await axios.get(`/customer/restaurants/${restaurantId}/menu/dishes`);
-        return response.data;
-    } catch (err) {
-        console.error("Error fetching dish projections:", err);
-        throw err;
-    }
-}
-
-export async function addItemToBasket(dishId: string, restaurantId: string) {
-    const response = await axios.post(`/customer/baskets/basketLines`, {
-        dishId: dishId,
-        restaurantId: restaurantId
-    });
-    return response.data;
-}
-
-export async function deleteItemFromBasket(basketId: string, dishId: string) {
-    const response = await axios.patch(`/customer/baskets/${basketId}/basketLines/${dishId}`);
-    return response.data;
-}
-
-export async function createOrderFromBasket(basketId: string, customerInfo: CustomerInfoFormData) {
-    const response = await axios.post(`/customer/baskets/${basketId}/orders`, {customerInfo: customerInfo}, {
-        withCredentials: true
-    });
-    return response.data;
-}
+// ============================================================================
+// ORDER CALLS
+// ============================================================================
 
 export async function getAllActiveOrdersForRestaurant(restaurantId: string): Promise<OrderProjection[]> {
     try {
@@ -198,11 +141,73 @@ export async function getAllActiveOrdersForRestaurant(restaurantId: string): Pro
     }
 }
 
+export async function changeOrderStatus(orderId: string, status: string) {
+    const response = await axios.patch(`/owner/orders/${orderId}`, {status});
+    return response.data;
+}
+
 export async function getOrderById(orderId: string) {
     const response = await axios.get<Order>(`/customer/orders/${orderId}`);
     return response.data;
 }
 
+// ============================================================================
+// BASKET CALLS
+// ============================================================================
 
+export async function addItemToBasket(dishId: string, restaurantId: string) {
+    const response = await axios.post(`/customer/baskets/basketLines`, {dishId, restaurantId});
+    return response.data;
+}
 
+export async function deleteItemFromBasket(basketId: string, dishId: string) {
+    const response = await axios.patch(`/customer/baskets/${basketId}/basketLines/${dishId}`);
+    return response.data;
+}
 
+export async function createOrderFromBasket(basketId: string, customerInfo: CustomerInfoFormData) {
+    const response = await axios.post(
+        `/customer/baskets/${basketId}/orders`,
+        {customerInfo},
+        {withCredentials: true}
+    );
+    return response.data;
+}
+
+// ============================================================================
+// CUSTOMER PROJECTION CALLS
+// ============================================================================
+
+export async function getRestaurantProjections(): Promise<RestaurantProjection[]> {
+    try {
+        const response = await axios.get(`/customer/restaurants`);
+        return response.data;
+    } catch (err) {
+        console.error("Error fetching restaurant projections:", err);
+        throw err;
+    }
+}
+
+export async function getDishProjections(restaurantId: string): Promise<DishProjection[]> {
+    try {
+        const response = await axios.get(`/customer/restaurants/${restaurantId}/menu/dishes`);
+        return response.data;
+    } catch (err) {
+        console.error("Error fetching dish projections:", err);
+        throw err;
+    }
+}
+
+// ============================================================================
+// ENUM CALLS
+// ============================================================================
+
+export async function getFoodTags(): Promise<string[]> {
+    const response = await axios.get("/enums/food-tags");
+    return response.data;
+}
+
+export async function getDishTypes(): Promise<string[]> {
+    const response = await axios.get("/enums/dish-types");
+    return response.data;
+}

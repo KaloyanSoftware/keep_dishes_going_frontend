@@ -1,6 +1,5 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {getAllActiveOrdersForRestaurant} from "../services/dataService.ts";
-import {changeOrderStatus} from "../services/restaurantDataService.ts";
+import {changeOrderStatus, getAllActiveOrdersForRestaurant} from "../services/dataService.ts";
 import type {OrderProjection} from "../model/owner/OrderProjection.ts";
 
 export function useOrderProjections(restaurantId: string) {
