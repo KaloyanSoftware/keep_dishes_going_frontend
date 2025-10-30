@@ -13,10 +13,10 @@ import {
     Stepper,
     Typography,
 } from "@mui/material";
-import {CheckCircle, Home, HourglassEmpty, LocalDining, RestaurantMenu, TwoWheeler,} from "@mui/icons-material";
+import {Cancel, CheckCircle, Home, HourglassEmpty, LocalDining, RestaurantMenu, TwoWheeler,} from "@mui/icons-material";
 import {useNavigate} from "react-router";
 import type {Order} from "../../../model/customer/Order";
-import {useOrderStatus} from "../../../hooks/useOrder.ts";
+import {useOrderStatus} from "../../../hooks/useOrder";
 import "./OrderConfirmation.scss";
 
 interface OrderConfirmationProps {
@@ -35,10 +35,11 @@ export function OrderConfirmation({order}: OrderConfirmationProps) {
     const navigate = useNavigate();
     const {isLoading, isError, order: liveOrder} = useOrderStatus(order.id);
     const currentOrder = liveOrder || order;
-
     const totalPrice = currentOrder.total;
     const currentStatus = currentOrder.status?.trim().toUpperCase() || "PENDING";
     const activeStep = STATUS_STEPS.findIndex((s) => s.key === currentStatus);
+
+    const isRejected = currentStatus === "REJECTED";
 
     return (
         <Container className="order-confirmation" maxWidth="sm">
@@ -62,6 +63,16 @@ export function OrderConfirmation({order}: OrderConfirmationProps) {
                     <Typography color="error" sx={{mb: 2}}>
                         ⚠️ Failed to load order status.
                     </Typography>
+                ) : isRejected ? (
+                    <Box textAlign="center" sx={{py: 4}}>
+                        <Cancel sx={{fontSize: 60, color: "#d32f2f", mb: 1}}/>
+                        <Typography variant="h5" fontWeight={700} color="error">
+                            Your order was rejected.
+                        </Typography>
+                        <Typography color="text.secondary" sx={{mt: 1}}>
+                            The restaurant has declined this order.
+                        </Typography>
+                    </Box>
                 ) : (
                     <>
                         <Typography variant="h6" mb={2}>
@@ -85,8 +96,8 @@ export function OrderConfirmation({order}: OrderConfirmationProps) {
                                                         index === activeStep ? "active" : "inactive"
                                                     }`}
                                                 >
-                                                    {step.icon}
-                                                </span>
+                          {step.icon}
+                        </span>
                                             )
                                         }
                                     >
@@ -107,9 +118,7 @@ export function OrderConfirmation({order}: OrderConfirmationProps) {
                                 primary={<Typography fontWeight={600}>{line.name}</Typography>}
                                 secondary={`€${line.pricePerUnit.toFixed(2)} × ${line.quantity}`}
                             />
-                            <Typography fontWeight={600}>
-                                €{line.total.toFixed(2)}
-                            </Typography>
+                            <Typography fontWeight={600}>€{line.total.toFixed(2)}</Typography>
                         </ListItem>
                     ))}
                 </List>

@@ -5,7 +5,10 @@ export function useDishProjections(restaurantId: string) {
     const {isLoading, isError, data: dishes} = useQuery({
         queryKey: ["dishes", restaurantId],
         queryFn: () => getDishProjections(restaurantId),
-        staleTime: 0,
+        refetchInterval: 5000,
+        refetchIntervalInBackground: true,
+        staleTime: 3000,
+        refetchOnWindowFocus: true,
     });
 
     return {isLoading, isError, dishes};

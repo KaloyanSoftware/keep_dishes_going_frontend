@@ -18,11 +18,14 @@ export function DishProjectionCard({
                                    }: DishProjectionCardProps) {
     const queryClient = useQueryClient();
     const basket: Basket | null | undefined = queryClient.getQueryData(["basket"]);
-
     const [isOutOfStock, setOutOfStock] = useState(dish.stockStatus === "OUT_OF_STOCK");
     const [isDifferentRestaurant, setDifferentRestaurant] = useState(
         !!basket?.restaurantId && basket.restaurantId !== dish.restaurantId
     );
+
+    useEffect(() => {
+        setOutOfStock(dish.stockStatus === "OUT_OF_STOCK");
+    }, [dish.stockStatus]);
 
     useEffect(() => {
         setDifferentRestaurant(
@@ -31,11 +34,6 @@ export function DishProjectionCard({
     }, [basket, dish.restaurantId]);
 
     const handleAddToBasket = () => {
-        setOutOfStock(dish.stockStatus === "OUT_OF_STOCK");
-        setDifferentRestaurant(
-            !!basket?.restaurantId && basket.restaurantId !== dish.restaurantId
-        );
-
         if (!isOutOfStock && !isDifferentRestaurant && onAddToBasket) {
             onAddToBasket(dish.dishId);
         }
@@ -86,23 +84,23 @@ export function DishProjectionCard({
                     </Typography>
                 </Box>
 
-                {!isOutOfStock && (
-                    <Box mt={2} textAlign="right">
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            size="small"
-                            onClick={handleAddToBasket}
-                            disabled={isAdding || isDifferentRestaurant}
-                        >
-                            {isDifferentRestaurant
-                                ? "Invalid"
-                                : isAdding
-                                    ? "Adding..."
+                <Box mt={2} textAlign="right">
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        onClick={handleAddToBasket}
+                        disabled={isAdding || isDifferentRestaurant || isOutOfStock}
+                    >
+                        {isDifferentRestaurant
+                            ? "Invalid"
+                            : isAdding
+                                ? "Adding..."
+                                : isOutOfStock
+                                    ? "Unavailable"
                                     : "Add to Basket"}
-                        </Button>
-                    </Box>
-                )}
+                    </Button>
+                </Box>
             </CardContent>
         </Card>
     );
