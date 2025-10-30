@@ -144,13 +144,9 @@ export function OrderConfirmation({order}: OrderConfirmationProps) {
                     color="primary"
                     fullWidth
                     sx={{mt: 3}}
-                    onClick={() => navigate("/customer/explore")}
+                    onClick={() => navigate("/customer/explore/restaurants")}
                 >
                     Back to Home
-                </Button>
-
-                <Button variant="contained" color="secondary" fullWidth sx={{mt: 2}}>
-                    Track Order
                 </Button>
             </Paper>
         </Container>

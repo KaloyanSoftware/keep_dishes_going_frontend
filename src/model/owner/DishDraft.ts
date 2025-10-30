@@ -3,6 +3,8 @@ export type DishDraft = {
 
     restaurantId: string,
 
+    dishId: string,
+
     name: string,
 
     type: string,

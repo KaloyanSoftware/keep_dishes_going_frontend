@@ -62,8 +62,6 @@ export function DishDraftForm({onSubmit, disabled}: DishDraftFormProps) {
                 <Typography variant="h6" fontWeight={600}>
                     Create a New Dish Draft
                 </Typography>
-
-                {/* Dish Name */}
                 <TextField
                     label="Name"
                     required
@@ -74,7 +72,6 @@ export function DishDraftForm({onSubmit, disabled}: DishDraftFormProps) {
                     fullWidth
                 />
 
-                {/* Description */}
                 <TextField
                     label="Description"
                     multiline
@@ -84,7 +81,6 @@ export function DishDraftForm({onSubmit, disabled}: DishDraftFormProps) {
                     fullWidth
                 />
 
-                {/* Dish Type */}
                 {isLoadingTypes ? (
                     <CircularProgress size={24}/>
                 ) : isErrorTypes ? (
@@ -108,7 +104,6 @@ export function DishDraftForm({onSubmit, disabled}: DishDraftFormProps) {
                     </TextField>
                 )}
 
-                {/* Price */}
                 <TextField
                     label="Price (€)"
                     type="number"
@@ -124,15 +119,12 @@ export function DishDraftForm({onSubmit, disabled}: DishDraftFormProps) {
                     fullWidth
                 />
 
-                {/* Picture URL */}
                 <TextField
                     label="Picture URL"
                     {...register("pictureURL")}
                     disabled={disabled}
                     fullWidth
                 />
-
-                {/* Food Tags — now with checkboxes */}
                 {isLoadingTags ? (
                     <CircularProgress size={24}/>
                 ) : isErrorTags ? (
@@ -159,8 +151,6 @@ export function DishDraftForm({onSubmit, disabled}: DishDraftFormProps) {
                         </FormGroup>
                     </FormControl>
                 )}
-
-                {/* Submit */}
                 <Stack direction="row" justifyContent="flex-end" sx={{mt: 2}}>
                     <Button
                         type="submit"
