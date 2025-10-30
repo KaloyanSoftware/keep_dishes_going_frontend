@@ -2,6 +2,7 @@ import {Alert, Box, Button, Card, CardContent, CardMedia, CircularProgress, Snac
 import type {Dish} from "../../../model/owner/Dish.ts";
 import "./DishCard.scss";
 import {useState} from "react";
+import {DishEditDialog} from "./DishEditDialog.tsx";
 
 interface DishCardProps {
     dish: Dish;
@@ -9,6 +10,7 @@ interface DishCardProps {
     onUnpublish?: (dishId: string) => Promise<void> | void;
     onMarkOutOfStock?: (dishId: string) => Promise<void> | void;
     onMarkBackInStock?: (dishId: string) => Promise<void> | void;
+    restaurantId: string;
     isProcessing?: boolean;
 }
 
@@ -18,17 +20,18 @@ export function DishCard({
                              onUnpublish,
                              onMarkOutOfStock,
                              onMarkBackInStock,
+                             restaurantId,
                              isProcessing = false,
                          }: DishCardProps) {
     const [isPublished, setIsPublished] = useState(dish.state === "PUBLISHED");
     const [isInStock, setIsInStock] = useState(dish.stockStatus === "IN_STOCK");
     const [isLocalLoading, setIsLocalLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [isEditOpen, setIsEditOpen] = useState(false);
 
     const handlePublishToggle = async () => {
         try {
             setIsLocalLoading(true);
-
             if (isPublished) {
                 await onUnpublish?.(dish.id);
                 setIsPublished(false);
@@ -37,8 +40,7 @@ export function DishCard({
                 setIsPublished(true);
             }
         } catch (error) {
-            console.error("Failed to toggle publish state:", error);
-            setErrorMessage("Failed to update publish status. Please try again.");
+            setErrorMessage("Failed to update publish status.");
         } finally {
             setIsLocalLoading(false);
         }
@@ -47,7 +49,6 @@ export function DishCard({
     const handleStockToggle = async () => {
         try {
             setIsLocalLoading(true);
-
             if (isInStock) {
                 await onMarkOutOfStock?.(dish.id);
                 setIsInStock(false);
@@ -56,8 +57,7 @@ export function DishCard({
                 setIsInStock(true);
             }
         } catch (error) {
-            console.error("Failed to toggle stock state:", error);
-            setErrorMessage("Failed to update stock status. Please try again.");
+            setErrorMessage("Failed to update stock status.");
         } finally {
             setIsLocalLoading(false);
         }
@@ -81,7 +81,6 @@ export function DishCard({
                     <Typography variant="body2" color="text.secondary">
                         {dish.type.replace("_", " ")} · €{dish.price}
                     </Typography>
-
                     <Box mt={1}>
                         <Typography variant="caption" color="text.secondary">
                             {dish.tags?.join(", ") || "No tags"}
@@ -91,17 +90,13 @@ export function DishCard({
                     <Box mt={2} className="dish-status">
                         <Typography
                             variant="caption"
-                            className={`dish-state ${
-                                isPublished ? "published" : "unpublished"
-                            }`}
+                            className={`dish-state ${isPublished ? "published" : "unpublished"}`}
                         >
                             {isPublished ? "Published" : "Unpublished"}
                         </Typography>
                         <Typography
                             variant="caption"
-                            className={`dish-stock ${
-                                isInStock ? "in-stock" : "out-stock"
-                            }`}
+                            className={`dish-stock ${isInStock ? "in-stock" : "out-stock"}`}
                         >
                             {isInStock ? "In Stock" : "Out of Stock"}
                         </Typography>
@@ -139,9 +134,26 @@ export function DishCard({
                                 "Mark In Stock"
                             )}
                         </Button>
+
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            size="small"
+                            onClick={() => setIsEditOpen(true)}
+                            disabled={disabled}
+                        >
+                            Edit
+                        </Button>
                     </Box>
                 </CardContent>
             </Card>
+
+            <DishEditDialog
+                restaurantId={restaurantId}
+                dish={dish}
+                isOpen={isEditOpen}
+                onClose={() => setIsEditOpen(false)}
+            />
 
             <Snackbar
                 open={!!errorMessage}

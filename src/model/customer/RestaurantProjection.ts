@@ -7,4 +7,5 @@ export type RestaurantProjection = {
     pictureURL: string;
     defaultPrepTime: number;
     cuisineType: string;
+    isOpen: boolean;
 }

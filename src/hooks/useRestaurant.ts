@@ -32,7 +32,11 @@ export function useRestaurants() {
         data: restaurants,
     } = useQuery({
         queryKey: ["restaurants"],
-        queryFn: () => getRestaurantProjections()
+        queryFn: getRestaurantProjections,
+        refetchInterval: 5000,
+        refetchIntervalInBackground: true,
+        staleTime: 3000,
+        refetchOnWindowFocus: true,
     });
 
     return {isLoading, isError, restaurants};

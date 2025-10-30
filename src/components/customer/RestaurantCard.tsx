@@ -1,5 +1,5 @@
-import {Box, Button, Card, CardContent, CardMedia, Typography} from "@mui/material";
-import type {RestaurantProjection} from "../../model/customer/RestaurantProjection.ts";
+import {Box, Button, Card, CardContent, CardMedia, Chip, Typography} from "@mui/material";
+import type {RestaurantProjection} from "../../model/customer/RestaurantProjection";
 import "./RestaurantCard.scss";
 
 interface RestaurantCardProps {
@@ -22,22 +22,32 @@ export function RestaurantCard({restaurant, onExplore}: RestaurantCardProps) {
                 <Typography variant="h6" fontWeight="600" gutterBottom>
                     {restaurant.email.split("@")[0]}'s Restaurant
                 </Typography>
+
                 <Typography variant="body2" color="text.secondary" gutterBottom>
                     {location}
                 </Typography>
+
                 <Typography variant="body2" color="text.secondary">
                     Cuisine: {restaurant.cuisineType}
                 </Typography>
+
                 <Typography variant="body2" color="text.secondary">
                     Prep Time: {restaurant.defaultPrepTime} min
                 </Typography>
 
-                <Box mt={2} textAlign="right">
+                <Box mt={2} display="flex" justifyContent="space-between" alignItems="center">
+                    <Chip
+                        label={restaurant.isOpen ? "OPEN" : "CLOSED"}
+                        color={restaurant.isOpen ? "success" : "error"}
+                        size="small"
+                    />
+
                     <Button
                         variant="contained"
                         color="primary"
                         size="small"
                         onClick={onExplore}
+                        disabled={!restaurant.isOpen}
                     >
                         Explore Menu
                     </Button>

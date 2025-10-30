@@ -84,6 +84,7 @@ export function Dishes() {
                             <DishCard
                                 key={dish.id}
                                 dish={dish}
+                                restaurantId={restaurantId}
                                 onPublish={handlePublishDish}
                                 onUnpublish={handleUnpublishDish}
                                 onMarkOutOfStock={handleMarkOutOfStock}
