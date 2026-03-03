@@ -103,6 +103,10 @@ export async function markDishBackInStock(dishId: string, restaurantId: string) 
     return response.data;
 }
 
+export async function deleteDish(dishId: string, restaurantId: string) {
+    await axios.delete(`/restaurant/${restaurantId}/menu/dishes/${dishId}`);
+}
+
 // ============================================================================
 // DRAFT CALLS
 // ============================================================================
@@ -125,6 +129,10 @@ export async function getDrafts(restaurantId: string): Promise<DishDraft[]> {
 export async function publishDishDraft(draftId: string, restaurantId: string) {
     const response = await axios.post(`/restaurant/${restaurantId}/menu/dishes`, {draftId});
     return response.data;
+}
+
+export async function deletDraft(draftId: string) {
+    await axios.delete(`/drafts/${draftId}`);
 }
 
 // ============================================================================

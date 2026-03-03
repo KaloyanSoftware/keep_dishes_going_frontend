@@ -1,5 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {
+    deleteDish,
     getDishes,
     markDishBackInStock,
     markDishOutOfStock,
@@ -66,4 +67,23 @@ export function usePublishDish(restaurantId: string) {
         },
     });
     return {publishDish, isPending, isError};
+}
+
+export function useDeleteDish(restaurantId: string) {
+    const queryClient = useQueryClient();
+
+    const mutation = useMutation({
+        mutationFn: (dishId: string) => deleteDish(dishId, restaurantId),
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ["dishes", restaurantId] });
+        },
+    });
+
+    return {
+        deleteDish: mutation.mutate,
+        deleteDishAsync: mutation.mutateAsync,
+        isLoading: mutation.isPending,
+        isError: mutation.isError,
+        error: mutation.error,
+    };
 }

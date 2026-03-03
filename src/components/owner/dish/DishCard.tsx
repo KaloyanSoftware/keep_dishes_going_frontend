@@ -10,6 +10,7 @@ interface DishCardProps {
     onUnpublish?: (dishId: string) => Promise<void> | void;
     onMarkOutOfStock?: (dishId: string) => Promise<void> | void;
     onMarkBackInStock?: (dishId: string) => Promise<void> | void;
+    onDeleteDish?: (dishId: string) => Promise<void>;
     restaurantId: string;
     isProcessing?: boolean;
 }
@@ -20,6 +21,7 @@ export function DishCard({
                              onUnpublish,
                              onMarkOutOfStock,
                              onMarkBackInStock,
+                             onDeleteDish,
                              restaurantId,
                              isProcessing = false,
                          }: DishCardProps) {
@@ -58,6 +60,17 @@ export function DishCard({
             }
         } catch (error) {
             setErrorMessage("Failed to update stock status.");
+        } finally {
+            setIsLocalLoading(false);
+        }
+    };
+
+    const handleDelete = async () => {
+        try {
+            setIsLocalLoading(true);
+            await onDeleteDish?.(dish.id);
+        } catch {
+            setErrorMessage("Failed to delete dish.");
         } finally {
             setIsLocalLoading(false);
         }
@@ -143,6 +156,16 @@ export function DishCard({
                             disabled={disabled}
                         >
                             Edit
+                        </Button>
+
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            size="small"
+                            onClick={handleDelete}
+                            disabled={disabled}
+                        >
+                            Delete
                         </Button>
                     </Box>
                 </CardContent>

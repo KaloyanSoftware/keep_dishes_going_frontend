@@ -3,6 +3,7 @@ import {Box, Button, CircularProgress, Container, Typography} from "@mui/materia
 import {OwnerHeader} from "../../components/owner/header/OwnerHeader.tsx";
 import {DishCard} from "../../components/owner/dish/DishCard.tsx";
 import {
+    useDeleteDish,
     useDishes,
     useMarkDishBackInStock,
     useMarkDishOutOfStock,
@@ -24,8 +25,9 @@ export function Dishes() {
     const {unpublishDish, isPending: isUnpublishing} = useUnpublishDish(restaurantId);
     const {markOutOfStock, isPending: isMarkingOut} = useMarkDishOutOfStock(restaurantId);
     const {markBackInStock, isPending: isMarkingIn} = useMarkDishBackInStock(restaurantId);
+    const {deleteDishAsync, isLoading: isDeleting} = useDeleteDish(restaurantId);
 
-    const isProcessing = isPublishing || isUnpublishing || isMarkingOut || isMarkingIn;
+    const isProcessing = isPublishing || isUnpublishing || isMarkingOut || isMarkingIn || isDeleting;
 
     if (isLoading) {
         return (
@@ -49,6 +51,7 @@ export function Dishes() {
     const handleUnpublishDish = (dishId: string) => unpublishDish(dishId);
     const handleMarkOutOfStock = (dishId: string) => markOutOfStock(dishId);
     const handleMarkBackInStock = (dishId: string) => markBackInStock(dishId);
+    const handleDeleteDish = (dishId: string) => deleteDishAsync(dishId);
 
     return (
         <Box className="dishes-root">
@@ -71,9 +74,7 @@ export function Dishes() {
                         <Button
                             variant="contained"
                             size="large"
-                            onClick={() =>
-                                navigate(`/owner/restaurant/${restaurantId}/drafts`)
-                            }
+                            onClick={() => navigate(`/owner/restaurant/${restaurantId}/drafts`)}
                         >
                             Go to Drafts
                         </Button>
@@ -89,6 +90,7 @@ export function Dishes() {
                                 onUnpublish={handleUnpublishDish}
                                 onMarkOutOfStock={handleMarkOutOfStock}
                                 onMarkBackInStock={handleMarkBackInStock}
+                                onDeleteDish={handleDeleteDish}
                                 isProcessing={isProcessing}
                             />
                         ))}
