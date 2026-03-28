@@ -1,16 +1,47 @@
-import {Box, Button, Card, CardContent, CardMedia, Typography} from "@mui/material";
+import {Box, Button, Card, CardContent, CardMedia, CircularProgress, Typography} from "@mui/material";
 import type {DishDraft} from "../../../model/owner/DishDraft.ts";
 import "./DishDraftCard.scss";
+import {useState} from "react";
 
 interface DraftCardProps {
     draft: DishDraft;
-    onPublish?: (draftId: string) => void;
+    onPublish?: (draftId: string) => Promise<void> | void;
+    onDeleteDraft?: (draftId: string) => Promise<void> | void;
+    isProcessing?: boolean;
 }
 
-export function DraftCard({draft, onPublish}: DraftCardProps) {
-    const handlePublish = () => {
-        if (onPublish) onPublish(draft.id);
+export function DraftCard({
+    draft,
+    onPublish,
+    onDeleteDraft,
+    isProcessing = false,
+}: DraftCardProps) {
+    const [isLocalLoading, setIsLocalLoading] = useState(false);
+    const [activeAction, setActiveAction] = useState<"publish" | "delete" | null>(null);
+
+    const handlePublish = async () => {
+        try {
+            setActiveAction("publish");
+            setIsLocalLoading(true);
+            await onPublish?.(draft.id);
+        } finally {
+            setIsLocalLoading(false);
+            setActiveAction(null);
+        }
     };
+
+    const handleDelete = async () => {
+        try {
+            setActiveAction("delete");
+            setIsLocalLoading(true);
+            await onDeleteDraft?.(draft.id);
+        } finally {
+            setIsLocalLoading(false);
+            setActiveAction(null);
+        }
+    };
+
+    const disabled = isProcessing || isLocalLoading;
 
     return (
         <Card className="draft-card" elevation={3}>
@@ -33,16 +64,33 @@ export function DraftCard({draft, onPublish}: DraftCardProps) {
                     </Typography>
                 </Box>
 
-                {/* Publish button */}
-                <Box mt={2} textAlign="right">
+                <Box mt={2} className="draft-actions">
                     <Button
                         variant="contained"
                         color="success"
                         size="small"
                         onClick={handlePublish}
-                        className="publish-btn"
+                        disabled={disabled}
                     >
-                        Publish
+                        {activeAction === "publish" && disabled ? (
+                            <CircularProgress size={18} color="inherit"/>
+                        ) : (
+                            "Publish"
+                        )}
+                    </Button>
+
+                    <Button
+                        variant="outlined"
+                        color="error"
+                        size="small"
+                        onClick={handleDelete}
+                        disabled={disabled}
+                    >
+                        {activeAction === "delete" && disabled ? (
+                            <CircularProgress size={18} color="inherit"/>
+                        ) : (
+                            "Delete"
+                        )}
                     </Button>
                 </Box>
             </CardContent>

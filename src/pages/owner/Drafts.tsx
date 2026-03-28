@@ -5,7 +5,7 @@ import "./Drafts.scss";
 import {OwnerHeader} from "../../components/owner/header/OwnerHeader.tsx";
 import {DraftCard} from "../../components/owner/draft/DishDraftCard.tsx";
 import {DishDraftDialog} from "../../components/owner/draft/DishDraftDialog.tsx";
-import {useDishDrafts, usePublishDishDraft} from "../../hooks/useDishDrafts.ts";
+import {useDeleteDishDraft, useDishDrafts, usePublishDishDraft} from "../../hooks/useDishDrafts.ts";
 import {useParams} from "react-router";
 
 export function Drafts() {
@@ -18,7 +18,14 @@ export function Drafts() {
     }
 
     const {drafts, isLoading, isError} = useDishDrafts(restaurantId);
-    const {publishDraft} = usePublishDishDraft(restaurantId);
+    const {
+        publishDraftAsync,
+        isPending: isPublishPending,
+    } = usePublishDishDraft(restaurantId);
+    const {
+        deleteDishDraftAsync,
+        isLoading: isDeletePending,
+    } = useDeleteDishDraft(restaurantId);
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -39,12 +46,11 @@ export function Drafts() {
     const hasDrafts = drafts && drafts.length > 0;
 
     const handlePublishDraft = async (draftId: string) => {
-        try {
-            publishDraft(draftId);
-            console.log("Draft published successfully:", draftId);
-        } catch (error) {
-            console.error("Failed to publish draft:", error);
-        }
+        await publishDraftAsync(draftId);
+    };
+
+    const handleDeleteDraft = async (draftId: string) => {
+        await deleteDishDraftAsync(draftId);
     };
 
     return (
@@ -80,7 +86,9 @@ export function Drafts() {
                             <DraftCard
                                 key={draft.id}
                                 draft={draft}
-                                onPublish={() => handlePublishDraft(draft.id)}
+                                onPublish={handlePublishDraft}
+                                onDeleteDraft={handleDeleteDraft}
+                                isProcessing={isPublishPending || isDeletePending}
                             />
                         ))}
                     </Box>

@@ -1,5 +1,5 @@
 import type {NewDishDraft} from "../model/owner/NewDishDraft.ts";
-import {createDishDraft, getDrafts, publishDishDraft} from "../services/dataService.ts";
+import {createDishDraft, deleteDraft, getDrafts, publishDishDraft} from "../services/dataService.ts";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 
 export function useDishDrafts(restaurantId: string) {
@@ -32,12 +32,36 @@ export function useAddDishDraft(restaurantId: string) {
 export function usePublishDishDraft(restaurantId: string) {
     const queryClient = useQueryClient();
 
-    const {mutate: publishDraft, isPending, isError} = useMutation({
+    const mutation = useMutation({
         mutationFn: (draftId: string) => publishDishDraft(draftId, restaurantId),
         onSuccess: async () => {
-            await queryClient.invalidateQueries({queryKey: ["drafts", restaurantId]})
+            await queryClient.invalidateQueries({queryKey: ["drafts", restaurantId]});
         },
     });
 
-    return {publishDraft, isPending, isError};
+    return {
+        publishDraft: mutation.mutate,
+        publishDraftAsync: mutation.mutateAsync,
+        isPending: mutation.isPending,
+        isError: mutation.isError,
+    };
+}
+
+export function useDeleteDishDraft(restaurantId: string) {
+    const queryClient = useQueryClient();
+
+    const mutation = useMutation({
+        mutationFn: (draftId: string) => deleteDraft(draftId),
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({queryKey: ["drafts", restaurantId]});
+        },
+    });
+
+    return {
+        deleteDishDraft: mutation.mutate,
+        deleteDishDraftAsync: mutation.mutateAsync,
+        isLoading: mutation.isPending,
+        isError: mutation.isError,
+        error: mutation.error,
+    };
 }
