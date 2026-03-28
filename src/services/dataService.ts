@@ -131,8 +131,13 @@ export async function publishDishDraft(draftId: string, restaurantId: string) {
     return response.data;
 }
 
-export async function deletDraft(draftId: string) {
+export async function deleteDraft(draftId: string) {
     await axios.delete(`/drafts/${draftId}`);
+}
+
+// Backward-compatible alias for existing typo-based callers.
+export async function deletDraft(draftId: string) {
+    await deleteDraft(draftId);
 }
 
 // ============================================================================

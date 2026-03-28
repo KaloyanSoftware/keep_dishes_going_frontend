@@ -1,7 +1,7 @@
 .draft-card {
   flex: 0 1 calc(25% - 2rem); /* 4 cards per row, responsive */
-  max-width: 320px;
-  min-width: 260px;
+  max-width: 360px;
+  min-width: 300px;
   border-radius: 1rem;
   overflow: hidden;
   background-color: #fff;
@@ -43,21 +43,28 @@
       color: #94a3b8;
       font-size: 0.85rem;
     }
-  }
 
-  .publish-btn {
-    font-weight: 600;
-    text-transform: none;
-    border-radius: 6px;
-    padding: 0.4rem 1rem;
-    background-color: #16a34a; /* Tailwind green-600 */
-    box-shadow: 0 3px 6px rgba(22, 163, 74, 0.3);
-    transition: all 0.25s ease;
+    .draft-actions {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 1.1rem;
 
-    &:hover {
-      background-color: #15803d;
-      box-shadow: 0 5px 10px rgba(22, 163, 74, 0.4);
-      transform: translateY(-2px);
+      button {
+        flex: 1 1 calc(50% - 0.6rem);
+        min-width: 0;
+        font-weight: 700;
+        text-transform: none;
+        border-radius: 6px;
+        padding: 0.5rem 1rem;
+      }
+
+      .MuiButton-containedSuccess {
+        background-color: #16a34a;
+
+        &:hover {
+          background-color: #15803d;
+        }
+      }
     }
   }
 }

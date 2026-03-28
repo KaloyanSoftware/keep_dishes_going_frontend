@@ -142,9 +142,9 @@ export function DishCard({
                             {disabled ? (
                                 <CircularProgress size={18} color="inherit"/>
                             ) : isInStock ? (
-                                "Mark Out of Stock"
+                                "Out of Stock"
                             ) : (
-                                "Mark In Stock"
+                                "In Stock"
                             )}
                         </Button>
 
@@ -160,7 +160,7 @@ export function DishCard({
 
                         <Button
                             variant="outlined"
-                            color="primary"
+                            color="error"
                             size="small"
                             onClick={handleDelete}
                             disabled={disabled}

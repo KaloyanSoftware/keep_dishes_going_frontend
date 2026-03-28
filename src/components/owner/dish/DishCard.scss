@@ -1,7 +1,7 @@
 .dish-card {
   flex: 0 1 calc(25% - 2rem);
-  max-width: 320px;
-  min-width: 260px;
+  max-width: 380px;
+  min-width: 320px;
   border-radius: 1rem;
   overflow: hidden;
   background-color: #fff;
@@ -86,8 +86,9 @@
 
     .dish-actions {
       display: flex;
-      justify-content: flex-end;
-      gap: 0.8rem;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.6rem;
       margin-top: 1.2rem;
 
       button {
@@ -96,6 +97,8 @@
         border-radius: 6px;
         padding: 0.5rem 1rem;
         transition: all 0.2s ease;
+        flex: 1 1 calc(50% - 0.6rem);
+        min-width: 0;
       }
 
       /* Publish / Unpublish */
